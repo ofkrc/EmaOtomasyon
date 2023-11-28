@@ -7,7 +7,7 @@ namespace EmaAPI.Models
 	{
 
 		[Key]
-		public int CompanyID { get; set; }
+		public int RecordId { get; set; }
 
 		[Column(TypeName = "Varchar")]
 		[StringLength(100)]
@@ -28,7 +28,6 @@ namespace EmaAPI.Models
 
 		[Column(TypeName = "Varchar")]
 		[StringLength(50)]
-		[Required(ErrorMessage = "This field cannot be empty!")]
 		public string? Email { get; set; }
 
 		[Column(TypeName = "Varchar")]
@@ -37,12 +36,7 @@ namespace EmaAPI.Models
 
 		[Column(TypeName = "Varchar")]
 		[StringLength(50)]
-		public string? TaxID { get; set; }
-
-		[Column(TypeName = "Varchar")]
-		[StringLength(255)]
-		[Required(ErrorMessage = "This field cannot be empty!")]
-		public string? Password { get; set; }
+		public string? TaxNo { get; set; }
 
 		public ICollection<Customer>? Customer { get; set; }
 		public ICollection<Invoice>? Invoice { get; set; }

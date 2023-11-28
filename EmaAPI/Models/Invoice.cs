@@ -6,35 +6,24 @@ namespace EmaAPI.Models
 	public class Invoice
 	{
 		[Key]
-		public int InvoiceID { get; set; }
-
-		[Column(TypeName = "Varchar")]
-		[StringLength(50)]
+		public int RecordId { get; set; }
+		public string? Code { get; set; }
 		public string? InvoiceNumber { get; set; }
-		public DateTime InvoiceDate { get; set; }
-
-		[Column(TypeName = "Varchar")]
-		[StringLength(50)]
-		public string? OrderNumber { get; set; }
-		public DateTime OrderDate { get; set; }
-
-		[Column(TypeName = "Varchar")]
-		[StringLength(100)]
-		public string? Product { get; set; }
-		[Column(TypeName = "decimal(18,2)")]
+		public DateTime? InvoiceDate { get; set; }
+		public decimal? OrderNumber { get; set; }
+		public DateTime? OrderDate { get; set; }
 		public decimal? Quantity { get; set; }
-		[Column(TypeName = "decimal(18,2)")]
 		public decimal? UnitPrice { get; set; }
-		[Column(TypeName = "decimal(18,2)")]
 		public decimal? Vat { get; set; }
-
-		[Column(TypeName = "decimal(18,2)")]
 		public decimal? VatRate { get; set; }
-		[Column(TypeName = "decimal(18,2)")]
 		public decimal? TotalAmount { get; set; }
-		public virtual Company? Company { get; set; }
-		public virtual Customer? Customer { get; set; }
 		public bool? Status { get; set; }
+		public bool? Deleted { get; set; }
+
+
+		public List<Item> Items { get; set; }
+		public virtual Company? Company { get; set; } //id olarak bağlamak için
+		public virtual Customer? Customer { get; set; }
 	}
 
 }

@@ -6,7 +6,7 @@ namespace EmaAPI.Models
 	public class Customer
 	{
 		[Key]
-		public int CustomerID { get; set; }
+		public int RecordId { get; set; }
 
 		[Column(TypeName = "Varchar")]
 		[StringLength(20)]
@@ -30,8 +30,8 @@ namespace EmaAPI.Models
 		[StringLength(15)]
 		public string? PhoneNumber { get; set; }
 
-		public ICollection<Invoice>? Invoices { get; set; }
-		public virtual Company? Company { get; set; }
+		public ICollection<Invoice>? Invoices { get; set; } //bir customerın birden fazla faturası olabilir.
+		public virtual Company? Company { get; set; } //id olarak bağlamak için
 		public bool Status { get; set; }
 	}
 
