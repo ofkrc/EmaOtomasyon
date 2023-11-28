@@ -22,9 +22,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Response\" />
-    <Folder Include="Models\Request\" />
+    <Folder Include="Models\Request\Invoice\" />
+    <Folder Include="Models\Request\Item\" />
+    <Folder Include="Models\Request\Customer\" />
+    <Folder Include="Models\Request\Company\" />
     <Folder Include="Enums\" />
+    <Folder Include="Models\Response\Company\" />
+    <Folder Include="Models\Response\Customer\" />
+    <Folder Include="Models\Response\Invoice\" />
+    <Folder Include="Models\Response\Item\" />
     <Folder Include="Repository\" />
   </ItemGroup>
 

@@ -24,6 +24,7 @@ namespace EmaAPI.Models
 		public List<Item> Items { get; set; }
 		public virtual Company? Company { get; set; } //id olarak bağlamak için
 		public virtual Customer? Customer { get; set; }
+		public virtual User? User { get; set; }
 	}
 
 }

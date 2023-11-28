@@ -7,10 +7,10 @@ namespace EmaAPI.Services
 	{
 
 	}
-	public class CompyanyService : ICompanyService
+	public class CompanyService : ICompanyService
 	{
 		private readonly EmaDbContext _dbContext;
-		public CompyanyService(EmaDbContext dbContext)
+		public CompanyService(EmaDbContext dbContext)
 		{
 			_dbContext = dbContext;
 		}

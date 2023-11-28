@@ -41,8 +41,9 @@ namespace EmaAPI.Models
 		public ICollection<Customer>? Customer { get; set; }
 		public ICollection<Invoice>? Invoice { get; set; }
 		public bool Status { get; set; }
+		public virtual User? User { get; set; }
 
-		
+
 
 	}
 }

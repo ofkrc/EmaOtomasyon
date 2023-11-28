@@ -32,6 +32,7 @@ namespace EmaAPI.Models
 
 		public ICollection<Invoice>? Invoices { get; set; } //bir customerın birden fazla faturası olabilir.
 		public virtual Company? Company { get; set; } //id olarak bağlamak için
+		public virtual User? User { get; set; }
 		public bool Status { get; set; }
 	}
 
