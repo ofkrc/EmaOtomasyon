@@ -34,6 +34,7 @@ namespace EmaAPI.Models
 		public virtual Company? Company { get; set; } //id olarak bağlamak için
 		public virtual User? User { get; set; }
 		public bool Status { get; set; }
+		public bool? Deleted { get; set; }
 	}
 
 }

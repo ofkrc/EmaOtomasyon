@@ -32,6 +32,7 @@ namespace EmaAPI.Models
 		public DateTime CreatedDatetime { get; set; } = DateTime.UtcNow;
 
 		public bool IsActive { get; set; } = true;
+		public bool Deleted { get; set; } = false;
 
 	}
 }

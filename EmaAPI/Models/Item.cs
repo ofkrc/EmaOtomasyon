@@ -37,6 +37,7 @@ namespace EmaAPI.Models
 		public DateTime CreatedDatetime { get; set; }
 
 		public DateTime? UpdatedDatetime { get; set; }
+		public bool? Deleted { get; set; }
 
 		public Invoice Invoice { get; set; }
 		public virtual User? User { get; set; }
