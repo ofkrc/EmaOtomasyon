@@ -29,12 +29,21 @@ namespace EmaAPI.Models
 		[Column(TypeName = "Varchar")]
 		[StringLength(15)]
 		public string? PhoneNumber { get; set; }
-
-		public ICollection<Invoice>? Invoices { get; set; } //bir customerın birden fazla faturası olabilir.
-		public virtual Company? Company { get; set; } //id olarak bağlamak için
-		public virtual User? User { get; set; }
 		public bool Status { get; set; }
 		public bool? Deleted { get; set; }
+
+
+		public int? CompanyId { get; set; }
+
+		[ForeignKey(nameof(CompanyId))]
+		public Company? Company { get; set; } 
+
+		public int? UserId { get; set; }
+
+		[ForeignKey(nameof(UserId))]
+		public User? User { get; set; }
+		public ICollection<Invoice> Invoice { get; set; }
+
 	}
 
 }

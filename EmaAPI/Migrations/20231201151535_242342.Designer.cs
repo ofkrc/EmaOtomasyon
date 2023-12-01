@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmaAPI.Migrations
 {
     [DbContext(typeof(EmaDbContext))]
-    [Migration("20231128212756_twotwo")]
-    partial class twotwo
+    [Migration("20231201151535_242342")]
+    partial class _242342
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,6 +42,9 @@ namespace EmaAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("Varchar");
 
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Email")
                         .HasMaxLength(50)
                         .HasColumnType("Varchar");
@@ -50,7 +53,7 @@ namespace EmaAPI.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("Varchar");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
                     b.Property<string>("TaxNo")
@@ -61,7 +64,7 @@ namespace EmaAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("Varchar");
 
-                    b.Property<int?>("UserRecordId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Website")
@@ -70,7 +73,7 @@ namespace EmaAPI.Migrations
 
                     b.HasKey("RecordId");
 
-                    b.HasIndex("UserRecordId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Companies");
                 });
@@ -87,8 +90,11 @@ namespace EmaAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("Varchar");
 
-                    b.Property<int?>("CompanyRecordId")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Email")
                         .HasMaxLength(50)
@@ -111,80 +117,16 @@ namespace EmaAPI.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("Varchar");
 
-                    b.Property<int?>("UserRecordId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("RecordId");
 
-                    b.HasIndex("CompanyRecordId");
+                    b.HasIndex("CompanyId");
 
-                    b.HasIndex("UserRecordId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("EmaAPI.Models.Invoice", b =>
-                {
-                    b.Property<int>("RecordId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecordId"));
-
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CompanyRecordId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CustomerRecordId")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("Deleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("InvoiceDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("InvoiceNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("OrderNumber")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("Quantity")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool?>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal?>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("UserRecordId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("Vat")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("VatRate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("RecordId");
-
-                    b.HasIndex("CompanyRecordId");
-
-                    b.HasIndex("CustomerRecordId");
-
-                    b.HasIndex("UserRecordId");
-
-                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("EmaAPI.Models.Item", b =>
@@ -203,13 +145,16 @@ namespace EmaAPI.Migrations
                     b.Property<DateTime>("CreatedDatetime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("InvoiceRecordId")
-                        .HasColumnType("int");
+                    b.Property<decimal?>("DiscountRate")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -228,14 +173,15 @@ namespace EmaAPI.Migrations
                     b.Property<DateTime?>("UpdatedDatetime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserRecordId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<decimal?>("VatRate")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("RecordId");
 
-                    b.HasIndex("InvoiceRecordId");
-
-                    b.HasIndex("UserRecordId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Items");
                 });
@@ -254,6 +200,9 @@ namespace EmaAPI.Migrations
 
                     b.Property<DateTime>("CreatedDatetime")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -285,11 +234,122 @@ namespace EmaAPI.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Invoice", b =>
+                {
+                    b.Property<int>("RecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecordId"));
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("InvoiceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InvoiceNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("OrderNumber")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RecordId");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("InvoiceLine", b =>
+                {
+                    b.Property<int>("RecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecordId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<bool?>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<decimal?>("DiscountRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("VatRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("RecordId");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("InvoiceLines");
+                });
+
             modelBuilder.Entity("EmaAPI.Models.Company", b =>
                 {
                     b.HasOne("EmaAPI.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserRecordId");
+                        .WithMany("Company")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -298,30 +358,45 @@ namespace EmaAPI.Migrations
                 {
                     b.HasOne("EmaAPI.Models.Company", "Company")
                         .WithMany("Customer")
-                        .HasForeignKey("CompanyRecordId");
+                        .HasForeignKey("CompanyId");
 
                     b.HasOne("EmaAPI.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserRecordId");
+                        .WithMany("Customer")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Company");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EmaAPI.Models.Invoice", b =>
+            modelBuilder.Entity("EmaAPI.Models.Item", b =>
+                {
+                    b.HasOne("EmaAPI.Models.User", "User")
+                        .WithMany("Item")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Invoice", b =>
                 {
                     b.HasOne("EmaAPI.Models.Company", "Company")
                         .WithMany("Invoice")
-                        .HasForeignKey("CompanyRecordId");
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("EmaAPI.Models.Customer", "Customer")
-                        .WithMany("Invoices")
-                        .HasForeignKey("CustomerRecordId");
+                        .WithMany("Invoice")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("EmaAPI.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserRecordId");
+                        .WithMany("Invoice")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Company");
 
@@ -330,19 +405,25 @@ namespace EmaAPI.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EmaAPI.Models.Item", b =>
+            modelBuilder.Entity("InvoiceLine", b =>
                 {
-                    b.HasOne("EmaAPI.Models.Invoice", "Invoice")
-                        .WithMany("Items")
-                        .HasForeignKey("InvoiceRecordId")
+                    b.HasOne("Invoice", "Invoice")
+                        .WithMany("InvoiceLines")
+                        .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EmaAPI.Models.Item", "Item")
+                        .WithMany("InvoiceLine")
+                        .HasForeignKey("ItemId");
+
                     b.HasOne("EmaAPI.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserRecordId");
+                        .WithMany("InvoiceLine")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Invoice");
+
+                    b.Navigation("Item");
 
                     b.Navigation("User");
                 });
@@ -356,12 +437,30 @@ namespace EmaAPI.Migrations
 
             modelBuilder.Entity("EmaAPI.Models.Customer", b =>
                 {
-                    b.Navigation("Invoices");
+                    b.Navigation("Invoice");
                 });
 
-            modelBuilder.Entity("EmaAPI.Models.Invoice", b =>
+            modelBuilder.Entity("EmaAPI.Models.Item", b =>
                 {
-                    b.Navigation("Items");
+                    b.Navigation("InvoiceLine");
+                });
+
+            modelBuilder.Entity("EmaAPI.Models.User", b =>
+                {
+                    b.Navigation("Company");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("InvoiceLine");
+
+                    b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("Invoice", b =>
+                {
+                    b.Navigation("InvoiceLines");
                 });
 #pragma warning restore 612, 618
         }

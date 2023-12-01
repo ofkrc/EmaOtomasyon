@@ -34,5 +34,11 @@ namespace EmaAPI.Models
 		public bool IsActive { get; set; } = true;
 		public bool Deleted { get; set; } = false;
 
+		public ICollection<Invoice> Invoice { get; set; }
+		public ICollection<Company> Company { get; set; }
+		public ICollection<Customer> Customer { get; set; }
+		public ICollection<Item> Item { get; set; }
+		public ICollection<InvoiceLine> InvoiceLine { get; set; }
+
 	}
 }

@@ -33,14 +33,21 @@ namespace EmaAPI.Models
 		[Range(0, int.MaxValue)]
 		public int StockQuantity { get; set; }
 
+		public decimal? DiscountRate { get; set; }
+		public decimal? VatRate { get; set; }
+
 		[Required]
 		public DateTime CreatedDatetime { get; set; }
 
 		public DateTime? UpdatedDatetime { get; set; }
 		public bool? Deleted { get; set; }
 
-		public Invoice Invoice { get; set; }
-		public virtual User? User { get; set; }
+		public int? UserId { get; set; }
+
+		[ForeignKey(nameof(UserId))]
+		public User? User { get; set; }
+
+		public ICollection<InvoiceLine> InvoiceLine { get; set; }
 
 	}
 

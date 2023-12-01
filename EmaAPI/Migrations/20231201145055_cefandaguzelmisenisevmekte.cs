@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EmaAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class twotwo : Migration
+    public partial class cefandaguzelmisenisevmekte : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,7 +24,8 @@ namespace EmaAPI.Migrations
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDatetime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    Deleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,87 +45,16 @@ namespace EmaAPI.Migrations
                     Email = table.Column<string>(type: "Varchar(50)", maxLength: 50, nullable: true),
                     TaxOffice = table.Column<string>(type: "Varchar(50)", maxLength: 50, nullable: true),
                     TaxNo = table.Column<string>(type: "Varchar(50)", maxLength: 50, nullable: true),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
-                    UserRecordId = table.Column<int>(type: "int", nullable: true)
+                    Status = table.Column<bool>(type: "bit", nullable: true),
+                    Deleted = table.Column<bool>(type: "bit", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Companies", x => x.RecordId);
                     table.ForeignKey(
-                        name: "FK_Companies_Users_UserRecordId",
-                        column: x => x.UserRecordId,
-                        principalTable: "Users",
-                        principalColumn: "RecordId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    RecordId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "Varchar(20)", maxLength: 20, nullable: false),
-                    Surname = table.Column<string>(type: "Varchar(20)", maxLength: 20, nullable: false),
-                    Address = table.Column<string>(type: "Varchar(100)", maxLength: 100, nullable: true),
-                    Email = table.Column<string>(type: "Varchar(50)", maxLength: 50, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "Varchar(15)", maxLength: 15, nullable: true),
-                    CompanyRecordId = table.Column<int>(type: "int", nullable: true),
-                    UserRecordId = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.RecordId);
-                    table.ForeignKey(
-                        name: "FK_Customers_Companies_CompanyRecordId",
-                        column: x => x.CompanyRecordId,
-                        principalTable: "Companies",
-                        principalColumn: "RecordId");
-                    table.ForeignKey(
-                        name: "FK_Customers_Users_UserRecordId",
-                        column: x => x.UserRecordId,
-                        principalTable: "Users",
-                        principalColumn: "RecordId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Invoices",
-                columns: table => new
-                {
-                    RecordId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    InvoiceNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    InvoiceDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    OrderNumber = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Vat = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    VatRate = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Status = table.Column<bool>(type: "bit", nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: true),
-                    CompanyRecordId = table.Column<int>(type: "int", nullable: true),
-                    CustomerRecordId = table.Column<int>(type: "int", nullable: true),
-                    UserRecordId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Invoices", x => x.RecordId);
-                    table.ForeignKey(
-                        name: "FK_Invoices_Companies_CompanyRecordId",
-                        column: x => x.CompanyRecordId,
-                        principalTable: "Companies",
-                        principalColumn: "RecordId");
-                    table.ForeignKey(
-                        name: "FK_Invoices_Customers_CustomerRecordId",
-                        column: x => x.CustomerRecordId,
-                        principalTable: "Customers",
-                        principalColumn: "RecordId");
-                    table.ForeignKey(
-                        name: "FK_Invoices_Users_UserRecordId",
-                        column: x => x.UserRecordId,
+                        name: "FK_Companies_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "RecordId");
                 });
@@ -141,76 +71,197 @@ namespace EmaAPI.Migrations
                     SalesPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PurchasePrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StockQuantity = table.Column<int>(type: "int", nullable: false),
+                    Vat = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    VatRate = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     CreatedDatetime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDatetime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    InvoiceRecordId = table.Column<int>(type: "int", nullable: false),
-                    UserRecordId = table.Column<int>(type: "int", nullable: true)
+                    Deleted = table.Column<bool>(type: "bit", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Items", x => x.RecordId);
                     table.ForeignKey(
-                        name: "FK_Items_Invoices_InvoiceRecordId",
-                        column: x => x.InvoiceRecordId,
+                        name: "FK_Items_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "RecordId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    RecordId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "Varchar(20)", maxLength: 20, nullable: false),
+                    Surname = table.Column<string>(type: "Varchar(20)", maxLength: 20, nullable: false),
+                    Address = table.Column<string>(type: "Varchar(100)", maxLength: 100, nullable: true),
+                    Email = table.Column<string>(type: "Varchar(50)", maxLength: 50, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "Varchar(15)", maxLength: 15, nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    Deleted = table.Column<bool>(type: "bit", nullable: true),
+                    CompanyId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.RecordId);
+                    table.ForeignKey(
+                        name: "FK_Customers_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "RecordId");
+                    table.ForeignKey(
+                        name: "FK_Customers_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "RecordId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invoices",
+                columns: table => new
+                {
+                    RecordId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InvoiceNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OrderNumber = table.Column<int>(type: "int", nullable: true),
+                    InvoiceDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: true),
+                    Deleted = table.Column<bool>(type: "bit", nullable: true),
+                    CompanyId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invoices", x => x.RecordId);
+                    table.ForeignKey(
+                        name: "FK_Invoices_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "RecordId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Invoices_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "RecordId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Invoices_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "RecordId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvoiceLines",
+                columns: table => new
+                {
+                    RecordId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    DiscountRate = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    VatRate = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: true),
+                    Deleted = table.Column<bool>(type: "bit", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    InvoiceId = table.Column<int>(type: "int", nullable: false),
+                    ItemId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvoiceLines", x => x.RecordId);
+                    table.ForeignKey(
+                        name: "FK_InvoiceLines_Invoices_InvoiceId",
+                        column: x => x.InvoiceId,
                         principalTable: "Invoices",
                         principalColumn: "RecordId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Items_Users_UserRecordId",
-                        column: x => x.UserRecordId,
+                        name: "FK_InvoiceLines_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "RecordId");
+                    table.ForeignKey(
+                        name: "FK_InvoiceLines_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "RecordId");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Companies_UserRecordId",
+                name: "IX_Companies_UserId",
                 table: "Companies",
-                column: "UserRecordId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_CompanyRecordId",
+                name: "IX_Customers_CompanyId",
                 table: "Customers",
-                column: "CompanyRecordId");
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_UserRecordId",
+                name: "IX_Customers_UserId",
                 table: "Customers",
-                column: "UserRecordId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoices_CompanyRecordId",
+                name: "IX_InvoiceLines_InvoiceId",
+                table: "InvoiceLines",
+                column: "InvoiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvoiceLines_ItemId",
+                table: "InvoiceLines",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvoiceLines_UserId",
+                table: "InvoiceLines",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoices_CompanyId",
                 table: "Invoices",
-                column: "CompanyRecordId");
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoices_CustomerRecordId",
+                name: "IX_Invoices_CustomerId",
                 table: "Invoices",
-                column: "CustomerRecordId");
+                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoices_UserRecordId",
+                name: "IX_Invoices_UserId",
                 table: "Invoices",
-                column: "UserRecordId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Items_InvoiceRecordId",
+                name: "IX_Items_UserId",
                 table: "Items",
-                column: "InvoiceRecordId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_UserRecordId",
-                table: "Items",
-                column: "UserRecordId");
+                column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Items");
+                name: "InvoiceLines");
 
             migrationBuilder.DropTable(
                 name: "Invoices");
+
+            migrationBuilder.DropTable(
+                name: "Items");
 
             migrationBuilder.DropTable(
                 name: "Customers");

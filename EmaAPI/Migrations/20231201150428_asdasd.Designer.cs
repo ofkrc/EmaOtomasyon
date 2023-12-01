@@ -4,6 +4,7 @@ using EmaAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmaAPI.Migrations
 {
     [DbContext(typeof(EmaDbContext))]
-    partial class EmaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231201150428_asdasd")]
+    partial class asdasd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,9 +153,6 @@ namespace EmaAPI.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<decimal?>("DiscountRate")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -172,6 +172,9 @@ namespace EmaAPI.Migrations
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<decimal?>("Vat")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("VatRate")
                         .HasColumnType("decimal(18,2)");

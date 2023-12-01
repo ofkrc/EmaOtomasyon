@@ -14,6 +14,7 @@ namespace EmaAPI.Context
         public DbSet<Invoice>? Invoices { get; set; }
         public DbSet<Item>? Items { get; set; }
         public DbSet<User>? Users { get; set; }
+        public DbSet<InvoiceLine>? InvoiceLines { get; set; }
 
     }
 

@@ -5,7 +5,6 @@ namespace EmaAPI.Models
 {
 	public class Company
 	{
-
 		[Key]
 		public int RecordId { get; set; }
 
@@ -37,12 +36,17 @@ namespace EmaAPI.Models
 		[Column(TypeName = "Varchar")]
 		[StringLength(50)]
 		public string? TaxNo { get; set; }
+		public bool? Status { get; set; }
+		public bool? Deleted { get; set; }
+
+		public int? UserId{ get; set; }
+
+		[ForeignKey(nameof(UserId))]
+		public User? User { get; set; }
+
 
 		public ICollection<Customer>? Customer { get; set; }
 		public ICollection<Invoice>? Invoice { get; set; }
-		public bool? Status { get; set; }
-		public bool? Deleted { get; set; }
-		public virtual User? User { get; set; }
 
 
 
