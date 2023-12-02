@@ -25,8 +25,8 @@ namespace EmaAPI.Controllers
 			return CreatedAtAction(nameof(Insert), new { id = newUser.RecordId }, newUser);
 		}
 
-		[HttpPut("update/{id}")]
-		public IActionResult UpdateInvoice(int id, [FromBody] InvoiceRequestModel request)
+		[HttpPut("Update/{id}")]
+		public IActionResult Update(int id, [FromBody] InvoiceRequestModel request)
 		{
 			try
 			{
@@ -48,7 +48,7 @@ namespace EmaAPI.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		public IActionResult DeleteInvoice(int id)
+		public IActionResult Delete(int id)
 		{
 			try
 			{
@@ -66,8 +66,8 @@ namespace EmaAPI.Controllers
 			}
 		}
 
-		[HttpGet("GetAllSearch")]
-		public IActionResult Search()
+		[HttpGet("Get")]
+		public IActionResult Get()
 		{
 			try
 			{
@@ -96,7 +96,7 @@ namespace EmaAPI.Controllers
 			}
 		}
 
-		[HttpGet("{invoiceId}/invoicelines")]
+		[HttpGet("{invoiceId}/InvoiceLines")]
 		public IActionResult GetInvoiceLinesByInvoiceId(int invoiceId)
 		{
 			try

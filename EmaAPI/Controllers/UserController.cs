@@ -29,14 +29,14 @@ public class UserController : ControllerBase
 		return Ok(users);
 	}
 
-	[HttpGet("GetAllUsers")]
-	public IActionResult GetAllUsers()
+	[HttpGet("Get")]
+	public IActionResult Get()
 	{
 		var users = _userService.GetAllUsers();
 		return Ok(users);
 	}
 
-	[HttpGet("GetAllUsers/{userId}")]
+	[HttpGet("Get/{userId}")]
 	[NonAction]
 	public IActionResult GetUserById(int recordId)
 	{
@@ -51,7 +51,7 @@ public class UserController : ControllerBase
 	}
 
 	[HttpPost("Update")]
-	public IActionResult UpdateUser([FromBody] UserRequestModel request)
+	public IActionResult Update([FromBody] UserRequestModel request)
 	{
 		try
 		{

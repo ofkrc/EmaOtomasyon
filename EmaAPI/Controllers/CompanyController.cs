@@ -36,8 +36,8 @@ namespace EmaAPI.Controllers
 			return NotFound();
 		}
 
-		[HttpGet("GetAllSearch")]
-		public IActionResult Search()
+		[HttpGet("Get")]
+		public IActionResult Get()
 		{
 			try
 			{
@@ -66,7 +66,7 @@ namespace EmaAPI.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		public IActionResult DeleteCompanies(int id)
+		public IActionResult Delete(int id)
 		{
 			try
 			{

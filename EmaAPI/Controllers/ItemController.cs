@@ -26,7 +26,7 @@ namespace EmaAPI.Controllers
 		}
 
 		[HttpPut("Update")]
-		public IActionResult UpdateItem(int itemId, [FromBody] ItemRequestModel request)
+		public IActionResult Update(int itemId, [FromBody] ItemRequestModel request)
 		{
 			var updatedItem = _itemService.Update(itemId, request);
 			if (updatedItem != null)
@@ -36,8 +36,8 @@ namespace EmaAPI.Controllers
 			return NotFound();
 		}
 
-		[HttpGet("GetAllSearch")]
-		public IActionResult Search()
+		[HttpGet("Get")]
+		public IActionResult Get()
 		{
 			try
 			{
