@@ -173,10 +173,7 @@ namespace EmaAPI.Services
 				);
 			}
 
-
-
 			query = query.Where(i => !i.Deleted.HasValue || (i.Deleted.HasValue && i.Deleted.Value == false));
-
 
 			return query.ToList();
 		}

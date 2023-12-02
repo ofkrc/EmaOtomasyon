@@ -5,14 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 public class InvoiceLine
 {
 	[Key]
-	public int RecordId { get; set; }
+	public int? RecordId { get; set; }
 
 	[Required]
 	[StringLength(30)]
-	public string Code { get; set; }
+	public string? Code { get; set; }
 
 	[StringLength(1000)]
-	public string Description { get; set; }
+	public string? Description { get; set; }
 	public decimal? Quantity { get; set; }
 	public decimal? UnitPrice { get; set; }
 	public decimal? DiscountRate { get; set; }
@@ -27,7 +27,7 @@ public class InvoiceLine
 	[ForeignKey(nameof(UserId))]
 	public User? User { get; set; }
 
-	public int InvoiceId { get; set; }
+	public int? InvoiceId { get; set; }
 
 	[ForeignKey(nameof(InvoiceId))]
 	public Invoice? Invoice { get; set; }

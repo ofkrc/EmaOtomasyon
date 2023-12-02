@@ -6,7 +6,7 @@ namespace EmaAPI.Models
 	public class Company
 	{
 		[Key]
-		public int RecordId { get; set; }
+		public int? RecordId { get; set; }
 
 		[Column(TypeName = "Varchar")]
 		[StringLength(100)]

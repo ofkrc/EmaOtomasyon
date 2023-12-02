@@ -6,7 +6,7 @@ namespace EmaAPI.Models
 	public class Customer
 	{
 		[Key]
-		public int RecordId { get; set; }
+		public int? RecordId { get; set; }
 
 		[Column(TypeName = "Varchar")]
 		[StringLength(20)]
@@ -29,7 +29,7 @@ namespace EmaAPI.Models
 		[Column(TypeName = "Varchar")]
 		[StringLength(15)]
 		public string? PhoneNumber { get; set; }
-		public bool Status { get; set; }
+		public bool? Status { get; set; }
 		public bool? Deleted { get; set; }
 
 

@@ -7,32 +7,32 @@ namespace EmaAPI.Models
 	public class User
 	{
 		[Key]
-		public int RecordId { get; set; } 
+		public int? RecordId { get; set; } 
 
 		[Required]
 		[MaxLength(256)]
-		public string UserName { get; set; }
+		public string? UserName { get; set; }
 
 		[Required]
 		[MaxLength(256)]
-		public string Email { get; set; }
+		public string? Email { get; set; }
 
 		[Required]
-		public string PasswordHash { get; set; }
+		public string? PasswordHash { get; set; }
 
 		[Required]
-		public string Name { get; set; }
+		public string? Name { get; set; }
 
 		[Required]
-		public string Surname { get; set; }
+		public string? Surname { get; set; }
 
 		[Required]
-		public string CompanyName { get; set; }
+		public string? CompanyName { get; set; }
 
-		public DateTime CreatedDatetime { get; set; } = DateTime.UtcNow;
+		public DateTime? CreatedDatetime { get; set; } = DateTime.UtcNow;
 
-		public bool IsActive { get; set; } = true;
-		public bool Deleted { get; set; } = false;
+		public bool? IsActive { get; set; } = true;
+		public bool? Deleted { get; set; } = false;
 
 		public ICollection<Invoice> Invoice { get; set; }
 		public ICollection<Company> Company { get; set; }

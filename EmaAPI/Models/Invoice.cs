@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 public class Invoice
 {
 	[Key]
-	public int RecordId { get; set; }
+	public int? RecordId { get; set; }
 	public string? Code { get; set; }
 	public string? InvoiceNumber { get; set; }
 	public decimal? OrderNumber { get; set; }
@@ -15,9 +15,9 @@ public class Invoice
 	public decimal? TotalAmount { get; set; }
 	public bool? Status { get; set; }
 	public bool? Deleted { get; set; }
-	public int CompanyId { get; set; }
-	public int CustomerId { get; set; }
-	public int UserId { get; set; }
+	public int? CompanyId { get; set; }
+	public int? CustomerId { get; set; }
+	public int? UserId { get; set; }
 
 	[ForeignKey(nameof(CompanyId))]
 	public Company? Company { get; set; }
