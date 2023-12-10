@@ -25,7 +25,7 @@ public class UserController : ControllerBase
 	[HttpPost("Login")]
 	public ActionResult<User> Login([FromBody] UserLoginRequestModel request)
 	{
-		var loginUser = _userService.Login(request);
+		var loginUser = _userService.LoginUserAsync(request);
 
 		return Ok(loginUser);
 	}

@@ -3,9 +3,11 @@ using EmaAPI.Models;
 using EmaAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using EmaAPI.Models.Request.Customer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EmaAPI.Controllers
 {
+	[Authorize]
 	[ApiController]
 	[Route("api/[controller]")]
 	public class CustomerController : ControllerBase

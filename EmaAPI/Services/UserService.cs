@@ -1,7 +1,9 @@
-﻿using EmaAPI.Context;
+﻿using Azure;
+using EmaAPI.Context;
 using EmaAPI.Models;
 using EmaAPI.Models.Request.User;
 using EmaAPI.Models.Response.User;
+using EmaAPI.Models.Token;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,15 +18,17 @@ namespace EmaAPI.Services
 		User GetUserById(int recordId);
 		User Update(UserRequestModel request);
 		User Delete(User user);
-		User Login(UserLoginRequestModel request);
+		Task<UserLoginResponse> LoginUserAsync(UserLoginRequestModel request);
 
 	}
 	public class UserService : IUserService
 	{
 		private readonly EmaDbContext _dbContext;
-		public UserService(EmaDbContext dbContext)
+		readonly ITokenService tokenService;
+		public UserService(EmaDbContext dbContext, ITokenService tokenService)
 		{
 			_dbContext = dbContext;
+			this.tokenService = tokenService;
 		}
 
 		public User Register(UserRequestModel request)
@@ -49,8 +53,10 @@ namespace EmaAPI.Services
 			return newUser;
 		}
 
-		public User Login(UserLoginRequestModel request)
+		public async Task<UserLoginResponse> LoginUserAsync(UserLoginRequestModel request)
 		{
+			UserLoginResponse response = new();
+
 			var user = _dbContext.Users.FirstOrDefault(x => x.UserName == request.UserName);
 
 			if (user == null)
@@ -65,8 +71,16 @@ namespace EmaAPI.Services
 			{
 				throw new Exception("Hatalı Şifre");
 			}
+			else
+			{
+				var generatedTokenInformation = await tokenService.GenerateToken(new GenerateTokenRequest { Username = request.UserName });
 
-			return user;
+				response.AuthenticateResult = true;
+				response.AuthToken = generatedTokenInformation.Token;
+				response.AccessTokenExpireDate = generatedTokenInformation.TokenExpireDate;
+			}
+
+			return response;
 		}
 
 		public User Update(UserRequestModel request)

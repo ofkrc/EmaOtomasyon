@@ -3,9 +3,11 @@ using EmaAPI.Models;
 using EmaAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using EmaAPI.Models.Request.Invoice;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EmaAPI.Controllers
 {
+	[Authorize]
 	[ApiController]
 	[Route("api/[controller]")]
 	public class InvoiceController : ControllerBase

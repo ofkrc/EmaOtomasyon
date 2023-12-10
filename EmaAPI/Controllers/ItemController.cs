@@ -2,10 +2,12 @@
 using EmaAPI.Models.Request.Invoice;
 using EmaAPI.Models.Request.Item;
 using EmaAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmaAPI.Controllers
 {
+	[Authorize]
 	[ApiController]
 	[Route("api/[controller]")]
 	public class ItemController : ControllerBase
