@@ -14,12 +14,20 @@ public class UserController : ControllerBase
 		_userService = userService;
 	}
 
-	[HttpPost("Insert")]
-	public ActionResult<User> Insert([FromBody] UserRequestModel request)
+	[HttpPost("Register")]
+	public ActionResult<User> Register([FromBody] UserRequestModel request)
 	{
-		var newUser = _userService.Insert(request);
+		var newUser = _userService.Register(request);
 
-		return CreatedAtAction(nameof(Insert), new { id = newUser.RecordId }, newUser);
+		return CreatedAtAction(nameof(Register), new { id = newUser.RecordId }, newUser);
+	}
+
+	[HttpPost("Login")]
+	public ActionResult<User> Login([FromBody] UserLoginRequestModel request)
+	{
+		var loginUser = _userService.Login(request);
+
+		return Ok(loginUser);
 	}
 
 	[HttpGet("Search")]

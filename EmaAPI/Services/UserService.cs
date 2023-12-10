@@ -2,6 +2,7 @@
 using EmaAPI.Models;
 using EmaAPI.Models.Request.User;
 using EmaAPI.Models.Response.User;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,12 +10,13 @@ namespace EmaAPI.Services
 {
 	public interface IUserService
 	{
-		User Insert(UserRequestModel request);
+		User Register(UserRequestModel request);
 		List<User> SearchUsers(string searchTerm);
 		List<User> GetAllUsers();
 		User GetUserById(int recordId);
 		User Update(UserRequestModel request);
 		User Delete(User user);
+		User Login(UserLoginRequestModel request);
 
 	}
 	public class UserService : IUserService
@@ -25,8 +27,9 @@ namespace EmaAPI.Services
 			_dbContext = dbContext;
 		}
 
-		public User Insert(UserRequestModel request)
+		public User Register(UserRequestModel request)
 		{
+			string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 			var newUser = new User
 			{
 
@@ -36,7 +39,7 @@ namespace EmaAPI.Services
 				CreatedDatetime = request.CreatedDatetime,
 				CompanyName = request.CompanyName,
 				IsActive = request.IsActive,
-				PasswordHash = request.Password,
+				PasswordHash = passwordHash,
 				Surname = request.Surname
 			};
 
@@ -44,6 +47,26 @@ namespace EmaAPI.Services
 			_dbContext.SaveChanges();
 
 			return newUser;
+		}
+
+		public User Login(UserLoginRequestModel request)
+		{
+			var user = _dbContext.Users.FirstOrDefault(x => x.UserName == request.UserName);
+
+			if (user == null)
+			{
+				throw new Exception("Kullanıcı bulunamadı. Lütfen geçerli bir kullanıcı adı girin.");
+			}
+
+			// Şifreyi ve hash'i doğru sırayla kontrol et
+			bool isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+
+			if (!isPasswordValid)
+			{
+				throw new Exception("Hatalı Şifre");
+			}
+
+			return user;
 		}
 
 		public User Update(UserRequestModel request)
@@ -55,7 +78,6 @@ namespace EmaAPI.Services
 				user.Surname = request.Surname;
 				user.Email = request.Email;
 				user.UserName = request.UserName;
-				user.CompanyName = request.CompanyName;
 				user.CompanyName = request.CompanyName;
 				user.PasswordHash = request.Password;
 				user.IsActive = request.IsActive;
