@@ -33,4 +33,8 @@
     <Folder Include="Repository\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EmaOtomasyon\EmaOtomasyon.csproj" />
+  </ItemGroup>
+
 </Project>
