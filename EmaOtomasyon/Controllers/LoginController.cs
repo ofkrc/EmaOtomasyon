@@ -32,7 +32,7 @@ namespace EmaOtomasyon.Controllers
                     Password = password
                 };
 
-                var endpoint = "api/User/Login"; // API'nin belgesine uygun şekilde değiştirin
+                var endpoint = "api/User/Login"; 
 
                 var response = await _httpClient.PostAsJsonAsync(endpoint, loginModel);
 
@@ -42,7 +42,6 @@ namespace EmaOtomasyon.Controllers
                     var token = JsonConvert.DeserializeObject<TokenModel>(tokenResponse);
 
                     HttpContext.Session.SetString("AccessToken", token.result.authToken);
-                    // Başarılı işlemler burada gerçekleştirilebilir
                     return RedirectToAction("Index","Home");
                 }
                 else

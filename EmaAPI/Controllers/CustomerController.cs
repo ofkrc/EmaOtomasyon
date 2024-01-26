@@ -1,13 +1,12 @@
-﻿using EmaAPI.Models.Request.Item;
-using EmaAPI.Models;
-using EmaAPI.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using EmaAPI.Models;
 using EmaAPI.Models.Request.Customer;
+using EmaAPI.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EmaAPI.Controllers
 {
-	[Authorize]
+    [Authorize]
 	[ApiController]
 	[Route("api/[controller]")]
 	public class CustomerController : ControllerBase
@@ -85,7 +84,7 @@ namespace EmaAPI.Controllers
 			}
 		}
 
-        [HttpGet("GetCustomerById/{id}")]
+        [HttpGet("GetCustomerById")]
         public IActionResult GetCustomerById(int id)
         {
             var customer = _customerService.GetCustomerById(id);

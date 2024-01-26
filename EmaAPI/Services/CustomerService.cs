@@ -59,7 +59,7 @@ namespace EmaAPI.Services
 			if (existingCustomer == null)
 			{
 
-				throw new InvalidOperationException("Belirtilen ID'ye sahip ürün bulunamadı.");
+				throw new InvalidOperationException("Belirtilen ID'ye sahip müşteri bulunamadı.");
 			}
 
 			existingCustomer.CompanyId = request.CompanyId;

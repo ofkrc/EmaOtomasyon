@@ -1,4 +1,7 @@
-﻿@using EmaOtomasyon.Models.Customer.Response
+﻿@{
+    Layout = "_TableViewLayout";
+}
+@using EmaOtomasyon.Models.Customer.Response
 @model List<CustomerGetModel>
 
 <table class="table table-dark table-hover">
@@ -26,7 +29,16 @@
                     <td>@customer.Address</td>
                     <td>@customer.Email</td>
                     <td>@customer.PhoneNumber</td>
-                    <td>@customer.Status</td>
+                    <td>
+                        @if (customer.Status)
+                        {
+                            <span class="badge badge-success">Aktif</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-danger">Pasif</span>
+                        }
+                    </td>
                     <td>
                         <!-- İşlemler için dropdown menü -->
                         <div class="dropdown">
@@ -34,7 +46,7 @@
                                 İşlemler
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="/Customer/Update?id=@customer.RecordId">Güncelle</a>
+                                <a class="dropdown-item" asp-controller="Customer" asp-action="Update" asp-route-recordId="@customer.RecordId">Güncelle</a>
                                 <a class="dropdown-item" href="#" onclick="deleteCustomer(@customer.RecordId)">Sil</a>
                                 <!-- Başka işlemleri ekleyebilirsiniz -->
                             </div>
