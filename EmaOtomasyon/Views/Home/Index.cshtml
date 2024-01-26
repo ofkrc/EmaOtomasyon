@@ -2,7 +2,89 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anasayfa</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+        .containerHome {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .button-containerHome {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .custom-button {
+            width: calc(20% - 1rem); /* 25% genişlik, 1rem boşluk */
+            height: 20rem;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @@media (max-width: 1200px) {
+            .custom-button {
+                width: calc(25% - 1rem); /* 50% genişlik, 20px boşluk */
+                height: 15rem;
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @@media (max-width: 768px) {
+            .custom-button {
+                width: calc(50% - 1rem); /* 50% genişlik, 20px boşluk */
+                height: 10rem;
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @@media (max-width: 204px) {
+            .custom-button {
+                width: calc(100% - 1rem); /* 50% genişlik, 20px boşluk */
+                height: 3rem;
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="containerHome">
+        <div class="button-containerHome">
+            <button class="btn btn-primary custom-button" onclick="navigateTo('Companies')">Şirketler</button>
+            <button class="btn btn-success custom-button" onclick="navigateTo('Customer')">Müşteriler</button>
+            <button class="btn btn-warning custom-button" onclick="navigateTo('Invoices')">Faturalar</button>
+            <button class="btn btn-danger custom-button" onclick="navigateTo('Products')">Ürünlerim</button>
+            <button class="btn btn-primary custom-button" onclick="navigateTo('Companies')">Şirketler</button>
+            <button class="btn btn-success custom-button" onclick="navigateTo('Customers')">Müşteriler</button>
+            <button class="btn btn-warning custom-button" onclick="navigateTo('Invoices')">Faturalar</button>
+            <button class="btn btn-danger custom-button" onclick="navigateTo('Products')">Ürünlerim</button>
+            <button class="btn btn-primary custom-button" onclick="navigateTo('Companies')">Şirketler</button>
+            <button class="btn btn-success custom-button" onclick="navigateTo('Customers')">Müşteriler</button>
+            <button class="btn btn-warning custom-button" onclick="navigateTo('Invoices')">Faturalar</button>
+            <button class="btn btn-danger custom-button" onclick="navigateTo('Products')">Ürünlerim</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS ve Popper.js (Opsiyonel, modal ve dropdown için gerekli) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function navigateTo(viewName) {
+            window.location.href = '/' + viewName + '/Index';
+        }
+    </script>
+</body>
+</html>

@@ -12,14 +12,14 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#8c52ff; color: white;">
-            <a class="navbar-brand ml-auto" href="#" style="color: white;">GAND TOOLS</a>
+            <a class="navbar-brand ml-auto" href="/Home" style="color: white; padding-left:1rem;">GAND TOOLS</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#" style="color: white;">Anasayfa <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/Home style="color: white;">Anasayfa <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" style="color: white;">Hakkımızda</a>
@@ -40,7 +40,8 @@
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container-custom">
+        @* Sayfanın tamamını kullansın diye container-fluid eğer hepsini kullanmasın ortalasın istersen container kullanabilirsin *@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

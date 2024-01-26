@@ -1,10 +1,7 @@
 ﻿// EmaOtomasyon projesi içinde
-using EmaAPI.Models;
 using EmaAPI.Models.Request.User;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace EmaOtomasyon.Controllers
 {
@@ -15,7 +12,8 @@ namespace EmaOtomasyon.Controllers
         public LoginController()
         {
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("http://localhost:5001/"); // API'nin adresine uygun şekilde değiştirin
+            //_httpClient.BaseAddress = new Uri("http://localhost:5001/");
+            _httpClient.BaseAddress = new Uri("http://localhost:5000/"); // API'nin adresine uygun şekilde değiştirin
         }
 
         public IActionResult Index()
@@ -40,19 +38,24 @@ namespace EmaOtomasyon.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
+                    var tokenResponse = await response.Content.ReadAsStringAsync();
+                    var token = JsonConvert.DeserializeObject<TokenModel>(tokenResponse);
+
+                    HttpContext.Session.SetString("AccessToken", token.result.authToken);
                     // Başarılı işlemler burada gerçekleştirilebilir
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index","Home");
                 }
                 else
                 {
                     var errorMessage = await response.Content.ReadAsStringAsync();
+
                     throw new Exception(errorMessage);
                 }
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = ex.Message;
-                return View("ErrorPage");
+                ViewBag.ErrorMessage = "Hatalı kullanıcı adı veya şifre.";
+                return View("Index");
             }
         }
 

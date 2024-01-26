@@ -62,6 +62,13 @@
                                         </div>
                                     </form>
 
+                                    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                                    {
+                                        <div class="alert alert-danger" role="alert">
+                                            @ViewBag.ErrorMessage
+                                        </div>
+                                    }
+
 
                                     @*  <a class="small text-muted" href="#!">Şifreni mi unuttun?</a> *@
                                     @* <p class="mb-5 pb-lg-2" style="color: #393f81;">
