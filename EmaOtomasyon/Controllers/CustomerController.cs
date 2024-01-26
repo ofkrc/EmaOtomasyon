@@ -40,4 +40,32 @@ public class CustomerController : Controller
             return View();
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Update(int recordId)
+    {
+        var httpClient = HttpContext.Items["MyHttpClient"] as HttpClient;
+
+        var endpoint = $"api/Customer/GetCustomerById?id={recordId}";
+
+        try
+        {
+            var response = await httpClient.GetFromJsonAsync<CustomerGetModel>(endpoint);
+
+            if (response != null)
+            {
+                return View(response);
+            }
+            else
+            {
+                return RedirectToAction("Index"); // Veya başka bir sayfaya yönlendirme yapabilirsiniz
+            }
+        }
+        catch (HttpRequestException)
+        {
+            return StatusCode(500, "API ile iletişim kurulurken bir hata oluştu.");
+        }
+    }
+
+
 }

@@ -84,5 +84,18 @@ namespace EmaAPI.Controllers
 				return StatusCode(500, "Bir hata oluştu.");
 			}
 		}
-	}
+
+        [HttpGet("GetCustomerById/{id}")]
+        public IActionResult GetCustomerById(int id)
+        {
+            var customer = _customerService.GetCustomerById(id);
+
+            if (customer != null)
+            {
+                return Ok(customer);
+            }
+
+            return NotFound($"RecordId {id} ile eşleşen müşteri bulunamadı.");
+        }
+    }
 }

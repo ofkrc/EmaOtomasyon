@@ -1,0 +1,33 @@
+﻿@model List<EmaOtomasyon.Models.Customer.Response.CustomerGetModel>
+
+@{
+    ViewData["Title"] = "Update Customers";
+}
+
+<h2>Update Customers</h2>
+
+@if (Model != null && Model.Any())
+{
+    <form id="customerForm" asp-action="Update" asp-controller="Customer" method="post">
+        @foreach (var customer in Model)
+        {
+            <div class="customer-container">
+                <span>@customer.Name</span>
+                <span>@customer.Surname</span>
+                <span>@customer.Address</span>
+                <span>@customer.Email</span>
+                <span>@customer.PhoneNumber</span>
+                <span>@customer.Status</span>
+
+                <input type="hidden" name="recordId" value="@customer.RecordId" />
+
+                <button type="submit" name="action" value="edit">Güncelle</button>
+                <button type="submit" name="action" value="delete">Sil</button>
+            </div>
+        }
+    </form>
+}
+else
+{
+    <p>Veri bulunamadı.</p>
+}

@@ -13,7 +13,9 @@ namespace EmaAPI.Services
 		void Delete(int customerId);
 		IEnumerable<Customer> SearchCustomers(string searchTerm);
 		IEnumerable<Customer> Get();
-	}
+		Customer GetCustomerById(int id);
+
+    }
 
 
 	public class CustomerService : ICustomerService
@@ -24,7 +26,12 @@ namespace EmaAPI.Services
 			_dbContext = dbContext;
 		}
 
-		public Customer Insert(CustomerRequestModel request)
+        public Customer GetCustomerById(int id)
+        {
+            return _dbContext.Customers.FirstOrDefault(c => c.RecordId == id);
+        }
+
+        public Customer Insert(CustomerRequestModel request)
 		{
 			var newCustomer = new Customer
 			{
