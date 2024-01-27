@@ -1,57 +1,64 @@
-﻿@model EmaOtomasyon.Models.Customer.Response.CustomerGetModel
+﻿@{
+    Layout = "_TableViewLayout";
+}
+
+@model EmaOtomasyon.Models.Customer.Response.CustomerGetModel
 
 @{
     ViewData["Title"] = "Update Customer";
 }
 
 <div class="container mt-5">
-
     @if (Model != null)
     {
-        <form id="customerForm" asp-action="Update" asp-controller="Customer" method="post">
-            <div class="form-group">
-                <label for="Name" class="font-weight-bold">Ad</label>
-                <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" />
-            </div>
-            <div class="form-group">
-                <label for="Surname" class="font-weight-bold">Soyad</label>
-                <input type="text" class="form-control" id="Surname" name="Surname" value="@Model.Surname" />
-            </div>
-            <div class="form-group">
-                <label for="Address" class="font-weight-bold">Adres</label>
-                <input type="text" class="form-control" id="Address" name="Address" value="@Model.Address" />
-            </div>
-            <div class="form-group">
-                <label for="Email" class="font-weight-bold">Email</label>
-                <input type="text" class="form-control" id="Email" name="Email" value="@Model.Email" />
-            </div>
-            <div class="form-group">
-                <label for="PhoneNumber" class="font-weight-bold">Telefon Numarası</label>
-                <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" />
-            </div>
-            <div class="form-group">
-                <label for="Status" class="font-weight-bold">Durum</label>
+        <form id="customerForm" asp-action="Update" asp-controller="Customer" method="post" class="row">
 
-                <div class="form-check">
-                    <input type="radio" class="form-check-input" id="Active" name="Status" value="true" @(Model != null && Model.Status ? "checked" : "") />
-                    <label class="form-check-label font-weight-bold" for="Active">Aktif</label>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Name" class="font-weight-bold">Ad</label>
+                    <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" />
                 </div>
-
-                <div class="form-check">
-                    <input type="radio" class="form-check-input" id="Inactive" name="Status" value="false" @(Model != null && !Model.Status ? "checked" : "") />
-                    <label class="form-check-label font-weight-bold" for="Inactive">Pasif</label>
+                <div class="form-group">
+                    <label for="Email" class="font-weight-bold">Email</label>
+                    <input type="text" class="form-control" id="Email" name="Email" value="@Model.Email" />
+                </div>
+                <div class="form-group">
+                    <label for="Address" class="font-weight-bold">Adres</label>
+                    <input type="text" class="form-control" id="Address" name="Address" value="@Model.Address" />
                 </div>
             </div>
 
-
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Surname" class="font-weight-bold">Soyad</label>
+                    <input type="text" class="form-control" id="Surname" name="Surname" value="@Model.Surname" />
+                </div>
+                <div class="form-group">
+                    <label for="PhoneNumber" class="font-weight-bold">Telefon Numarası</label>
+                    <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" />
+                </div>
+                <div class="form-group">
+                    <label for="Status" class="font-weight-bold">Durum</label>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="Active" name="Status" value="true" @(Model != null && Model.Status ? "checked" : "") />
+                        <label class="form-check-label font-weight-bold" for="Active">Aktif</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="Inactive" name="Status" value="false" @(Model != null && !Model.Status ? "checked" : "") />
+                        <label class="form-check-label font-weight-bold" for="Inactive">Pasif</label>
+                    </div>
+                </div>
+            </div>
 
             <!-- Hidden fields -->
             <input type="hidden" id="recordId" name="recordId" value="@Model.RecordId" />
             <input type="hidden" id="CompanyId" name="CompanyId" value="@Model.CompanyId" />
             <input type="hidden" id="UserId" name="UserId" value="@Model.UserId" />
-            <input type="hidden" id="UserId" name="Deleted" value="@Model.Deleted" />
+            <input type="hidden" id="Deleted" name="Deleted" value="@Model.Deleted" />
 
-            <button type="submit" class="btn btn-primary" name="action" value="update">Kaydet</button>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary" name="action" value="update">Kaydet</button>
+            </div>
         </form>
     }
     else
