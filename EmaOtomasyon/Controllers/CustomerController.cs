@@ -1,6 +1,10 @@
-﻿using EmaOtomasyon.Models.Customer.Response;
+﻿using EmaOtomasyon.Models.Company.Response;
+using EmaOtomasyon.Models.Customer.Response;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Reflection;
+using System.Security.Claims;
 
 public class CustomerController : Controller
 {
@@ -59,7 +63,7 @@ public class CustomerController : Controller
             }
             else
             {
-                return RedirectToAction("Index"); 
+                return RedirectToAction("Index");
             }
         }
         catch (HttpRequestException)
@@ -90,7 +94,7 @@ public class CustomerController : Controller
 
         try
         {
-            var response = await httpClient.PutAsJsonAsync(endpoint,customerModel);
+            var response = await httpClient.PutAsJsonAsync(endpoint, customerModel);
 
             if (response.IsSuccessStatusCode)
             {
@@ -107,8 +111,64 @@ public class CustomerController : Controller
         }
     }
 
+    [HttpGet]
+    public async Task<IActionResult> AddCustomer()
+    {
+        var httpClient = HttpContext.Items["MyHttpClient"] as HttpClient;
 
+        var endpoint = "api/Company/Get";
+        var response = await httpClient.GetAsync(endpoint);
 
+        if (response.IsSuccessStatusCode)
+        {
+            var responseContent = await response.Content.ReadAsStringAsync();
+            ViewBag.Companies = JsonConvert.DeserializeObject<List<CompanyResponseModel>>(responseContent);
+            return View();
+        }
+        else
+        {
+            ViewBag.ErrorMessage = "Şuanda işleminizi gerçekleştiremiyoruz. Lütfen daha sonra tekrar deneyin.";
+            return View();
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddCustomer(CustomerGetModel model)
+    {
+        var customerModel = new CustomerGetModel
+        {
+            Name = model.Name,
+            Address = model.Address,
+            CompanyId = model.CompanyId,
+            Deleted = false,
+            Email = model.Email,
+            PhoneNumber = model.PhoneNumber,
+            Status = true,
+            Surname = model.Surname,
+            UserId = Convert.ToInt32(HttpContext.Items["RecordId"])
+        };
+
+        var httpClient = HttpContext.Items["MyHttpClient"] as HttpClient;
+        var endpoint = $"api/Customer/Insert";
+
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync(endpoint, customerModel);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+        catch (HttpRequestException)
+        {
+            return StatusCode(500, "API ile iletişim kurulurken bir hata oluştu.");
+        }
+    }
 
 
 }

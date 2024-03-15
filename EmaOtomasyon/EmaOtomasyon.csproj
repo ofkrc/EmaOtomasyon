@@ -14,10 +14,11 @@
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.24.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Customer\Request\" />
+    <Folder Include="Models\Company\Request\" />
   </ItemGroup>
 
 </Project>

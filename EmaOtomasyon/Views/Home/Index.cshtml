@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Anasayfa";
 }
 
 <!DOCTYPE html>
@@ -63,15 +63,15 @@
 
     <div class="containerHome">
         <div class="button-containerHome">
-            <button class="btn btn-primary custom-button" onclick="navigateTo('Companies')">Şirketler</button>
-            <button class="btn btn-success custom-button" onclick="navigateTo('Customer')">Müşteriler</button>
-            <button class="btn btn-warning custom-button" onclick="navigateTo('Invoices')">Faturalar</button>
-            <button class="btn btn-danger custom-button" onclick="navigateTo('Products')">Ürünlerim</button>
-            <button class="btn btn-info custom-button" onclick="navigateTo('Companies')">Belgeler</button>
-            <button class="btn btn-primary custom-button" onclick="navigateTo('Companies')">Şirketler</button>
-            <button class="btn btn-success custom-button" onclick="navigateTo('Customer')">Müşteriler</button>
-            <button class="btn btn-warning custom-button" onclick="navigateTo('Invoices')">Faturalar</button>
-            <button class="btn btn-danger custom-button" onclick="navigateTo('Products')">Ürünlerim</button>
+            <button class="btn btn-primary custom-button" onclick="navigateToIndex('Companies')">Şirketler</button>
+            <button class="btn btn-success custom-button" onclick="navigateToIndex('Customer')">Müşteriler</button>
+            <button class="btn btn-warning custom-button" onclick="navigateToIndex('Invoices')">Faturalar</button>
+            <button class="btn btn-danger custom-button" onclick="navigateToIndex('Products')">Ürünlerim</button>
+            <button class="btn btn-info custom-button" onclick="navigateToIndex('Companies')">Belgeler</button>
+            <button class="btn btn-primary custom-button" onclick="navigateTo('Companies','AddCompany')">Şirket Ekle</button>
+            <button class="btn btn-success custom-button" onclick="navigateTo('Customer','AddCustomer')">Müşteri Ekle</button>
+            <button class="btn btn-warning custom-button" onclick="navigateTo('Invoices','AddInvoice')">Fatura Ekle</button>
+            <button class="btn btn-danger custom-button" onclick="navigateTo('Products','AddProduct')">Ürün Ekle</button>
             <button class="btn btn-info custom-button" onclick="navigateTo('Companies')">Belgeler</button>
             <button class="btn btn-primary custom-button" onclick="navigateTo('Companies')">Şirketler</button>
             <button class="btn btn-success custom-button" onclick="navigateTo('Customer')">Müşteriler</button>
@@ -86,8 +86,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        function navigateTo(viewName) {
-            window.location.href = '/' + viewName + '/Index';
+        function navigateToIndex(category) {
+            window.location.href = '/' + category + '/Index';
+        }
+        function navigateTo(category, viewName) {
+            window.location.href = '/' + category + '/' + viewName;
         }
     </script>
 </body>

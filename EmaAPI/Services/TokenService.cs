@@ -26,18 +26,19 @@ namespace EmaAPI.Services
 
 			var dateTimeNow = DateTime.UtcNow;
 
-			JwtSecurityToken jwt = new JwtSecurityToken(
-					issuer: configuration["AppSettings:ValidIssuer"],
-					audience: configuration["AppSettings:ValidAudience"],
-					claims: new List<Claim> {
-						new Claim("userName", request.Username)
-					},
-					notBefore: dateTimeNow,
-					expires: dateTimeNow.Add(TimeSpan.FromMinutes(500)),
-					signingCredentials: new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256)
-				);
+            JwtSecurityToken jwt = new JwtSecurityToken(
+				issuer: configuration["AppSettings:ValidIssuer"],
+				audience: configuration["AppSettings:ValidAudience"],
+				claims: new List<Claim> {
+					new Claim("UserName", request.Username),
+					new Claim("RecordId", request.RecordId.ToString()) // RecordId'yi de ekledik
+				},
+				notBefore: dateTimeNow,
+				expires: dateTimeNow.Add(TimeSpan.FromMinutes(500)),
+				signingCredentials: new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256)
+			);
 
-			return Task.FromResult(new GenerateTokenResponse
+            return Task.FromResult(new GenerateTokenResponse
 			{
 				Token = new JwtSecurityTokenHandler().WriteToken(jwt),
 				TokenExpireDate = dateTimeNow.Add(TimeSpan.FromMinutes(500))

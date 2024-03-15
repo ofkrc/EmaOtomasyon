@@ -73,7 +73,7 @@ namespace EmaAPI.Services
 			}
 			else
 			{
-				var generatedTokenInformation = await tokenService.GenerateToken(new GenerateTokenRequest { Username = request.UserName });
+				var generatedTokenInformation = await tokenService.GenerateToken(new GenerateTokenRequest { Username = request.UserName, RecordId = user.RecordId });
 
 				response.AuthenticateResult = true;
 				response.AuthToken = generatedTokenInformation.Token;

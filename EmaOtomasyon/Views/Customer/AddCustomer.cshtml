@@ -1,0 +1,49 @@
+﻿@{
+    Layout = "_TableViewLayout";
+}
+
+@model EmaOtomasyon.Models.Customer.Response.CustomerGetModel
+
+@{
+    ViewData["Title"] = "Müşteri Ekle";
+}
+
+<div class="container">
+    <br />
+    <h2>Müşteri Ekleme Ekranı</h2>
+    <h6>Uyarı: Şirket Oluşturmadıysanız lütfen daha önce şirket oluşturunuz!</h6>
+    <form asp-action="AddCustomer" method="post" enctype="multipart/form-data">
+        <!-- Form içeriği buraya gelecek -->
+        <div class="form-group">
+            <label for="Name">Müşteri Adı:</label>
+            <input type="text" class="form-control" id="Name" name="Name" required>
+        </div>
+        <div class="form-group">
+            <label for="Surname">Müşteri Soyadı:</label>
+            <input type="text" class="form-control" id="Surname" name="Surname" required>
+        </div>
+        <div class="form-group">
+            <label for="Address">Adres:</label>
+            <textarea class="form-control" id="Address" name="Address"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="Email">Email:</label>
+            <input type="text" class="form-control" id="Email" name="Email" required>
+        </div>
+        <div class="form-group">
+            <label for="PurchasePrice">Telefon Numarası:</label>
+            <input type="number" class="form-control" id="PhoneNumber" name="PhoneNumber" required>
+        </div>
+        <div class="form-group">
+            <label for="CompanyId">Şirket:</label>
+            <select class="form-control" id="CategoryId" name="CompanyId">
+                @foreach (var companies in ViewBag.Companies)
+                {
+                    <option value="@companies.RecordId">@companies.CompanyName</option>
+                }
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Müşteri Ekle</button>
+    </form>
+</div>
