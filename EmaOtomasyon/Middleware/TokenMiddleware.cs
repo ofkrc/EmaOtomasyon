@@ -1,8 +1,6 @@
 ﻿namespace EmaOtomasyon.Middleware
 {
     using Microsoft.AspNetCore.Http;
-    using Microsoft.Extensions.DependencyInjection;
-    using Newtonsoft.Json.Linq;
     using System.IdentityModel.Tokens.Jwt;
     using System.Net.Http;
     using System.Net.Http.Headers;

@@ -1,10 +1,7 @@
 ﻿using EmaOtomasyon.Models.Company.Response;
 using EmaOtomasyon.Models.Customer.Response;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using System.Reflection;
-using System.Security.Claims;
 
 public class CustomerController : Controller
 {
