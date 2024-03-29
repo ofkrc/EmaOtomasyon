@@ -1,12 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace EmaOtomasyon.Models.Company.Response
+﻿namespace EmaOtomasyon.Models.Company.Response
 {
     public class CompanyResponseModel
     {
 
-        public int? RecordId { get; set; }
+        public int RecordId { get; set; }  //recorid değerini ? nullable kontrolü verirsen db'ye kayıt atmıyor.
         public string? CompanyName { get; set; }
         public string? Address { get; set; }
         public string? PhoneNumber { get; set; }

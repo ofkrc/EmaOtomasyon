@@ -85,5 +85,18 @@ namespace EmaAPI.Controllers
 				return StatusCode(500, "Bir hata oluştu.");
 			}
 		}
-	}
+
+        [HttpGet("GetCompanyById")]
+        public IActionResult GetCompanyById(int id)
+        {
+            var company = _companyService.GetCompanyById(id);
+
+            if (company != null)
+            {
+                return Ok(company);
+            }
+
+            return NotFound($"RecordId {id} ile eşleşen şirket bulunamadı.");
+        }
+    }
 }

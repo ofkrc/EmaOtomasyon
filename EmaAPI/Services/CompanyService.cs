@@ -1,19 +1,20 @@
 ﻿using EmaAPI.Context;
-using EmaAPI.Models.Request.Item;
 using EmaAPI.Models;
 using EmaAPI.Models.Request.Company;
 
 namespace EmaAPI.Services
 {
 
-	public interface ICompanyService
+    public interface ICompanyService
 	{
 		Company Insert(CompanyRequestModel request);
 		Company Update(int companyId, CompanyRequestModel request);
 		IEnumerable<Company> Search();
 		IEnumerable<Company> SearchCompanies(string searchTerm);
 		void DeleteCompanies(int companiesId);
-	}
+		Company GetCompanyById(int id);
+
+    }
 	public class CompanyService : ICompanyService
 	{
 		private readonly EmaDbContext _dbContext;
@@ -44,7 +45,12 @@ namespace EmaAPI.Services
 			return newCompany;
 		}
 
-		public Company Update(int companyId, CompanyRequestModel request)
+        public Company GetCompanyById(int id)
+        {
+            return _dbContext.Companies.FirstOrDefault(c => c.RecordId == id);
+        }
+
+        public Company Update(int companyId, CompanyRequestModel request)
 		{
 			var existingCompany = _dbContext.Companies.Find(companyId);
 
@@ -64,7 +70,7 @@ namespace EmaAPI.Services
 			existingCompany.PhoneNumber = request.PhoneNumber;
 			existingCompany.Status = request.Status;
 			existingCompany.UserId = request.UserId;
-			existingCompany.Deleted = request.Deleted;
+			existingCompany.Deleted = false;
 
 			_dbContext.SaveChanges();
 
