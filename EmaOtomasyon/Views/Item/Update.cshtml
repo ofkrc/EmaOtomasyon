@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "_TableViewLayout";
+}
+
+@model EmaOtomasyon.Models.Item.Response.ItemResponseModel
+
+@{
+    ViewData["Title"] = "Update Item";
+}
+
+<div class="container mt-5">
+    @if (Model != null)
+    {
+        <form id="ItemForm" asp-action="Update" asp-controller="Item" method="post" class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Name">Ürün Adı:</label>
+                    <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" />
+                </div>
+                <div class="form-group">
+                    <label for="Code">Ürün Kodu:</label>
+                    <input type="text" class="form-control" id="Code" name="Code" value="@Model.Code" />
+                </div>
+                <div class="form-group">
+                    <label for="Description">Ürün Açıklaması:</label>
+                    <input type="text" class="form-control" id="Description" name="Description" value="@Model.Description" />
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="PurchasePrice">Alış Fiyatı:</label>
+                    <input type="number" class="form-control" id="PurchasePrice" name="PurchasePrice" value="@Model.PurchasePrice" />
+                </div>
+                <div class="form-group">
+                    <label for="SalesPrice">Satış Fiyatı:</label>
+                    <input type="number" class="form-control" id="SalesPrice" name="SalesPrice" value="@Model.SalesPrice" />
+                </div>
+                <div class="form-group">
+                    <label for="StockQuantity">Stok Miktarı:</label>
+                    <input type="number" class="form-control" id="StockQuantity" name="StockQuantity" value="@Model.StockQuantity" />
+                </div>
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <label for="DiscountRate">İskonto Yüzdesi:</label>
+                    <input type="number" class="form-control" id="DiscountRate" name="DiscountRate" value="@Model.DiscountRate" />
+                </div>
+                <div class="form-group">
+                    <label for="VatRate">Vergi Yüzdesi:</label>
+                    <input type="number" class="form-control" id="VatRate" name="VatRate" value="@Model.VatRate" />
+                </div>                
+            </div>
+
+            <!-- Hidden fields -->
+            <input type="hidden" id="recordId" name="recordId" value="@Model.RecordId" />
+            <input type="hidden" id="UserId" name="UserId" value="@Model.UserId" />
+            <input type="hidden" id="Deleted" name="Deleted" value="@Model.Deleted" />
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary" name="action" value="update">Kaydet</button>
+            </div>
+        </form>
+    }
+    else
+    {
+        <p>Veri bulunamadı.</p>
+    }
+</div>

@@ -1,0 +1,50 @@
+﻿@{
+    Layout = "_TableViewLayout";
+}
+
+@model EmaOtomasyon.Models.Item.Response.ItemResponseModel
+
+@{
+    ViewData["Title"] = "Ürün Ekle";
+}
+
+<div class="container">
+    <br />
+    <h2>Ürün Ekleme Ekranı</h2>
+    <form asp-action="AddItem" method="post" enctype="multipart/form-data">
+        <!-- Form içeriği buraya gelecek -->
+        <div class="form-group">
+            <label for="Name">Ürün Adı:</label>
+            <input type="text" class="form-control" id="Name" name="Name" required>
+        </div>
+        <div class="form-group">
+            <label for="Code">Ürün Kodu:</label>
+            <input type="text" class="form-control" id="Code" name="Code" required>
+        </div>
+        <div class="form-group">
+            <label for="Description">Ürün Açıklaması:</label>          
+            <textarea class="form-control" id="Description" name="Description"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="PurchasePrice">Alış Fiyatı:</label>
+            <input type="number" class="form-control" id="PurchasePrice" name="PurchasePrice" required>
+        </div>
+        <div class="form-group">
+            <label for="SalesPrice">Satış Fiyatı:</label>
+            <input type="number" class="form-control" id="SalesPrice" name="SalesPrice" required>
+        </div>
+        <div class="form-group">
+            <label for="StockQuantity">Stok Miktarı:</label>
+            <input type="number" class="form-control" id="StockQuantity" name="StockQuantity" required>
+        </div>
+        <div class="form-group">
+            <label for="DiscountRate">İskonto Yüzdesi:</label>
+            <input type="number" class="form-control" id="DiscountRate" name="DiscountRate" required>
+        </div>
+        <div class="form-group">
+            <label for="VatRate">Vergi Yüzdesi:</label>
+            <input type="number" class="form-control" id="VatRate" name="VatRate" required>
+        </div>        
+        <button type="submit" class="btn btn-primary">Ürün Ekle</button>
+    </form>
+</div>

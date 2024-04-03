@@ -68,7 +68,7 @@ namespace EmaAPI.Controllers
 			}
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("DeleteItems/{id}")]
 		public IActionResult DeleteItems(int id)
 		{
 			try
@@ -76,15 +76,24 @@ namespace EmaAPI.Controllers
 				_itemService.DeleteItems(id);
 				return Ok("Ürün başarıyla silindi.");
 			}
-			catch (InvalidOperationException ex)
-			{
-				return NotFound(ex.Message);
-			}
 			catch (Exception ex)
 			{
 				// Diğer olası hataları ele alabilirsiniz.
 				return StatusCode(500, "Bir hata oluştu.");
 			}
 		}
-	}
+
+        [HttpGet("GetItemById")]
+        public IActionResult GetItemById(int id)
+        {
+            var item = _itemService.GetItemById(id);
+
+            if (item != null)
+            {
+                return Ok(item);
+            }
+
+            return NotFound($"RecordId {id} ile eşleşen ürün bulunamadı.");
+        }
+    }
 }

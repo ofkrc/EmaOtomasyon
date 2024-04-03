@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Models\Company\Request\" />
+    <Folder Include="Models\Item\Request\" />
   </ItemGroup>
 
 </Project>

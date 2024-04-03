@@ -13,7 +13,9 @@ namespace EmaAPI.Services
 		IEnumerable<Item> Search();
 		IEnumerable<Item> SearchItems(string searchTerm);
 		void DeleteItems(int itemId);
-	}
+		Item GetItemById(int id);
+
+    }
 	public class ItemService : IItemService
 	{
 		private readonly EmaDbContext _dbContext;
@@ -26,7 +28,6 @@ namespace EmaAPI.Services
 		{
 			var newItem = new Item
 			{
-				RecordId = request.RecordId,
 				Code = request.Code,
 				Name = request.Name,
 				CreatedDatetime = request.CreatedDatetime,
@@ -59,7 +60,6 @@ namespace EmaAPI.Services
 
 			existingItem.Code = request.Code;
 			existingItem.Name = request.Name;
-			existingItem.CreatedDatetime = request.CreatedDatetime;
 			existingItem.Deleted = request.Deleted;
 			existingItem.Description = request.Description;
 			existingItem.DiscountRate = request.DiscountRate;
@@ -117,5 +117,10 @@ namespace EmaAPI.Services
 			}
 		}
 
-	}
+        public Item GetItemById(int id)
+        {
+            return _dbContext.Items.FirstOrDefault(c => c.RecordId == id);
+        }
+
+    }
 }
