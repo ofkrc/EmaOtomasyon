@@ -44,7 +44,10 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" asp-controller="Item" asp-action="Update" asp-route-recordId="@Item.RecordId">Güncelle</a>
-                                <a class="dropdown-item" href="#" onclick="deleteItem(@Item.RecordId)">Sil</a>
+                                <form asp-controller="Item" asp-action="Delete" method="post">
+                                    <input type="hidden" name="ItemId" value="@Item.RecordId" />
+                                    <button type="submit" class="dropdown-item">Sil</button>
+                                </form>
                                 <!-- Başka işlemleri ekleyebilirsiniz -->
                             </div>
                         </div>
@@ -60,24 +63,3 @@
         }
     </tbody>
 </table>
-
-@* <script>
-    function deleteItem(recordId) {
-        if (confirm("Bu ürünü silmek istediğinizden emin misiniz?")) {
-            fetch(`/api/Item/DeleteItems/${recordId}`, {
-                method: 'DELETE'
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Ürünü silerken bir hata oluştu.');
-                    }
-                    // Silme işlemi başarılı olduysa sayfayı yenile
-                    location.reload();
-                })
-                .catch(error => {
-                    console.error('Hata:', error);
-                    alert('Ürünü silerken bir hata oluştu.');
-                });
-        }
-    }
-</script> *@

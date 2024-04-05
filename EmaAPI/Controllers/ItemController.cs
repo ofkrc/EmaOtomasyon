@@ -68,7 +68,7 @@ namespace EmaAPI.Controllers
 			}
 		}
 
-		[HttpDelete("DeleteItems/{id}")]
+		[HttpDelete("{id}")]
 		public IActionResult DeleteItems(int id)
 		{
 			try

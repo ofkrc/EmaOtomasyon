@@ -167,5 +167,30 @@ public class CustomerController : Controller
         }
     }
 
+    [HttpPost]
+    public async Task<IActionResult> Delete(int CustomerId)
+    {
+        var httpClient = HttpContext.Items["MyHttpClient"] as HttpClient;
+        var endpoint = $"api/Customer/{CustomerId}";
+
+        try
+        {
+            var response = await httpClient.DeleteAsync(endpoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+        catch (HttpRequestException)
+        {
+            return StatusCode(500, "API ile iletişim kurulurken bir hata oluştu.");
+        }
+    }
+
 
 }
