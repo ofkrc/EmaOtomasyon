@@ -30,7 +30,6 @@
     <Folder Include="Models\Response\Customer\" />
     <Folder Include="Models\Response\Invoice\" />
     <Folder Include="Models\Response\Item\" />
-    <Folder Include="Repository\" />
   </ItemGroup>
 
   <ItemGroup>

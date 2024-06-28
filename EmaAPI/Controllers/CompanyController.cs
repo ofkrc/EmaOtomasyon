@@ -4,6 +4,7 @@ using EmaAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using EmaAPI.Models.Request.Company;
 using Microsoft.AspNetCore.Authorization;
+using EmaAPI.Services.Interfaces;
 
 namespace EmaAPI.Controllers
 {

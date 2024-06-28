@@ -1,6 +1,6 @@
 ﻿using EmaAPI.Models;
 using EmaAPI.Models.Request.User;
-using EmaAPI.Services;
+using EmaAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]

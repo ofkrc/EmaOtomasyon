@@ -1,142 +1,107 @@
-﻿using Azure;
-using EmaAPI.Context;
+﻿using EmaAPI.Helpers;
 using EmaAPI.Models;
 using EmaAPI.Models.Request.User;
 using EmaAPI.Models.Response.User;
 using EmaAPI.Models.Token;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+using EmaAPI.Repositories;
+using EmaAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmaAPI.Services
 {
-	public interface IUserService
-	{
-		User Register(UserRequestModel request);
-		List<User> SearchUsers(string searchTerm);
-		List<User> GetAllUsers();
-		User GetUserById(int recordId);
-		User Update(UserRequestModel request);
-		User Delete(User user);
-		Task<UserLoginResponse> LoginUserAsync(UserLoginRequestModel request);
+    public class UserService : IUserService
+    {
+        private readonly IRepository<User> _userRepository;
+        private readonly ITokenService _tokenService;
 
-	}
-	public class UserService : IUserService
-	{
-		private readonly EmaDbContext _dbContext;
-		readonly ITokenService tokenService;
-		public UserService(EmaDbContext dbContext, ITokenService tokenService)
-		{
-			_dbContext = dbContext;
-			this.tokenService = tokenService;
-		}
+        public UserService(IRepository<User> userRepository, ITokenService tokenService)
+        {
+            _userRepository = userRepository;
+            _tokenService = tokenService;
+        }
 
-		public User Register(UserRequestModel request)
-		{
-			string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-			var newUser = new User
-			{
+        public User Register(UserRequestModel request)
+        {
+            var newUser = new User();
+            GenericMappingHelper.Map(request, newUser);
+            newUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-				UserName = request.UserName,
-				Email = request.Email,
-				Name = request.Name,
-				CreatedDatetime = request.CreatedDatetime,
-				CompanyName = request.CompanyName,
-				IsActive = request.IsActive,
-				PasswordHash = passwordHash,
-				Surname = request.Surname
-			};
+            _userRepository.Add(newUser);
+            return newUser;
+        }
 
-			_dbContext.Users.Add(newUser);
-			_dbContext.SaveChanges();
+        public async Task<UserLoginResponse> LoginUserAsync(UserLoginRequestModel request)
+        {
+            UserLoginResponse response = new();
+            var user = _userRepository.List().FirstOrDefault(x => x.UserName == request.UserName);
 
-			return newUser;
-		}
+            if (user == null)
+            {
+                throw new Exception("Kullanıcı bulunamadı. Lütfen geçerli bir kullanıcı adı girin.");
+            }
 
-		public async Task<UserLoginResponse> LoginUserAsync(UserLoginRequestModel request)
-		{
-			UserLoginResponse response = new();
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
 
-			var user = _dbContext.Users.FirstOrDefault(x => x.UserName == request.UserName);
+            if (!isPasswordValid)
+            {
+                throw new Exception("Hatalı Şifre");
+            }
+            else
+            {
+                var generatedTokenInformation = await _tokenService.GenerateToken(new GenerateTokenRequest { Username = request.UserName, RecordId = user.RecordId });
 
-			if (user == null)
-			{
-				throw new Exception("Kullanıcı bulunamadı. Lütfen geçerli bir kullanıcı adı girin.");
-			}
+                response.AuthenticateResult = true;
+                response.AuthToken = generatedTokenInformation.Token;
+                response.AccessTokenExpireDate = generatedTokenInformation.TokenExpireDate;
+            }
 
-			// Şifreyi ve hash'i doğru sırayla kontrol et
-			bool isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+            return response;
+        }
 
-			if (!isPasswordValid)
-			{
-				throw new Exception("Hatalı Şifre");
-			}
-			else
-			{
-				var generatedTokenInformation = await tokenService.GenerateToken(new GenerateTokenRequest { Username = request.UserName, RecordId = user.RecordId });
+        public User Update(UserRequestModel request)
+        {
+            var user = _userRepository.List().FirstOrDefault(x => x.RecordId == request.RecordId);
+            if (user != null)
+            {
+                GenericMappingHelper.Map(request, user);
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-				response.AuthenticateResult = true;
-				response.AuthToken = generatedTokenInformation.Token;
-				response.AccessTokenExpireDate = generatedTokenInformation.TokenExpireDate;
-			}
+                _userRepository.Update(user);
+            }
 
-			return response;
-		}
+            return user;
+        }
 
-		public User Update(UserRequestModel request)
-		{
-			var user = _dbContext.Users.Where(x => x.RecordId == request.RecordId).FirstOrDefault();
-			if (user != null)
-			{
-				user.Name = request.UserName;
-				user.Surname = request.Surname;
-				user.Email = request.Email;
-				user.UserName = request.UserName;
-				user.CompanyName = request.CompanyName;
-				user.PasswordHash = request.Password;
-				user.IsActive = request.IsActive;
-				user.Deleted = request.Deleted;
-				user.CreatedDatetime = DateTime.UtcNow;
-			}
-			_dbContext.SaveChanges();
+        public User Delete(User user)
+        {
+            if (user != null)
+            {
+                user.Deleted = true;
+                _userRepository.Update(user);
+            }
 
-			return user;
-		}
+            return user;
+        }
 
-		public User Delete(User user)
-		{
-			if (user != null)
-			{
-				user.Deleted = true;
-			}
-			_dbContext.SaveChanges();
+        public List<User> SearchUsers(string searchTerm)
+        {
+            return _userRepository.List()
+                .Where(u =>
+                    EF.Functions.Like(u.UserName, $"%{searchTerm}%") ||
+                    EF.Functions.Like(u.Email, $"%{searchTerm}%") ||
+                    EF.Functions.Like(u.Name, $"%{searchTerm}%") ||
+                    EF.Functions.Like(u.Surname, $"%{searchTerm}%"))
+                .ToList();
+        }
 
-			return user;
-		}
+        public List<User> GetAllUsers()
+        {
+            return _userRepository.List().Where(x => x.Deleted == false).ToList();
+        }
 
-		public List<User> SearchUsers(string searchTerm)
-		{
-			var users = _dbContext.Users
-				.Where(u =>
-					EF.Functions.Like(u.UserName, $"%{searchTerm}%") ||
-					EF.Functions.Like(u.Email, $"%{searchTerm}%") ||
-					EF.Functions.Like(u.Name, $"%{searchTerm}%") ||
-					EF.Functions.Like(u.Surname, $"%{searchTerm}%"))
-				.ToList();
-
-			return users;
-		}
-
-		public List<User> GetAllUsers()
-		{
-			return _dbContext.Users.Where(x=>x.Deleted == false).ToList();
-		}
-
-		public User GetUserById(int recordId)
-		{
-			return _dbContext.Users.Find(recordId);
-		}
-	
-
-	}
+        public User GetUserById(int recordId)
+        {
+            return _userRepository.GetById(recordId);
+        }
+    }
 }

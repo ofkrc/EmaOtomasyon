@@ -2,6 +2,7 @@
 using EmaAPI.Models.Request.Invoice;
 using EmaAPI.Models.Request.Item;
 using EmaAPI.Services;
+using EmaAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

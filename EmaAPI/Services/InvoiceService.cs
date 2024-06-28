@@ -1,193 +1,123 @@
-﻿using EmaAPI.Context;
-using EmaAPI.Models.Request.User;
-using EmaAPI.Models;
-using EmaAPI.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using EmaAPI.Helpers;
 using EmaAPI.Models.Request.Invoice;
+using EmaAPI.Repositories;
+using EmaAPI.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmaAPI.Services
 {
+    public class InvoiceService : IInvoiceService
+    {
+        private readonly IRepository<Invoice> _invoiceRepository;
+        private readonly IRepository<InvoiceLine> _invoiceLineRepository;
 
-	public interface IInvoiceService
-	{
-		Invoice Insert(InvoiceRequestModel request);
-		void UpdateInvoice(Invoice existingInvoice, InvoiceRequestModel request);
-		Invoice GetInvoiceById(int id);
-		void DeleteInvoice(int invoiceId);
-		IEnumerable<Invoice> Search();
-		IEnumerable<Invoice> SearchInvoices(string searchTerm);
-		IEnumerable<InvoiceLine> GetInvoiceLinesByInvoiceId(int invoiceId);
-	}
-	public class InvoiceService : IInvoiceService
-	{
-		private readonly EmaDbContext _dbContext;
-		public InvoiceService(EmaDbContext dbContext)
-		{
-			_dbContext = dbContext;
-		}
+        public InvoiceService(IRepository<Invoice> invoiceRepository, IRepository<InvoiceLine> invoiceLineRepository)
+        {
+            _invoiceRepository = invoiceRepository;
+            _invoiceLineRepository = invoiceLineRepository;
+        }
 
-		public Invoice Insert(InvoiceRequestModel request)
-		{
-			var newInvoice = new Invoice
-			{
-				Code = request.Code,
-				CompanyId = request.CompanyId,
-				CustomerId = request.CustomerId,
-				Deleted = request.Deleted,
-				InvoiceDate = request.InvoiceDate,
-				InvoiceNumber = request.InvoiceNumber,
-				OrderDate = request.OrderDate,
-				OrderNumber = request.OrderNumber,
-				RecordId = request.RecordId,
-				Status = request.Status,
-				TotalAmount = request.TotalAmount,
-				UserId = request.UserId
-			};
+        public Invoice Insert(InvoiceRequestModel request)
+        {
+            var newInvoice = new Invoice();
+            GenericMappingHelper.Map(request, newInvoice);
 
-			_dbContext.Invoices.Add(newInvoice);
-			_dbContext.SaveChanges();
+            newInvoice = _invoiceRepository.Add(newInvoice);
 
-			if (request.invoiceLineRequestModels != null && request.invoiceLineRequestModels.Any())
-			{
-				foreach (var lineRequest in request.invoiceLineRequestModels)
-				{
-					var newLine = new InvoiceLine
-					{
-						Code = lineRequest.Code,
-						Description = lineRequest.Description,
-						Quantity = lineRequest.Quantity,
-						UnitPrice = lineRequest.UnitPrice,
-						VatRate = lineRequest.VatRate,
-						DiscountRate = lineRequest.DiscountRate,
-						TotalAmount = lineRequest.TotalAmount,
-						Status = lineRequest.Status,
-						InvoiceId = newInvoice.RecordId,
-						UserId = newInvoice.UserId,
-						ItemId = lineRequest.ItemId,
-						Deleted = lineRequest.Deleted
-					};
+            if (request.invoiceLineRequestModels != null && request.invoiceLineRequestModels.Any())
+            {
+                foreach (var lineRequest in request.invoiceLineRequestModels)
+                {
+                    var newLine = new InvoiceLine();
+                    GenericMappingHelper.Map(lineRequest, newLine);
+                    newLine.InvoiceId = newInvoice.RecordId;
+                    newLine.UserId = newInvoice.UserId;
 
-					_dbContext.InvoiceLines.Add(newLine);
-				}
+                    _invoiceLineRepository.Add(newLine);
+                }
+            }
 
-				_dbContext.SaveChanges();
-			}
-			return newInvoice;
-		}
+            return newInvoice;
+        }
 
-		public void UpdateInvoice(Invoice existingInvoice, InvoiceRequestModel request)
-		{
-			existingInvoice.Code = request.Code;
-			existingInvoice.CompanyId = request.CompanyId;
-			existingInvoice.CustomerId = request.CustomerId;
-			existingInvoice.Deleted = request.Deleted;
-			existingInvoice.InvoiceDate = request.InvoiceDate;
-			existingInvoice.InvoiceNumber = request.InvoiceNumber;
-			existingInvoice.OrderDate = request.OrderDate;
-			existingInvoice.OrderNumber = request.OrderNumber;
-			existingInvoice.Status = request.Status;
-			existingInvoice.TotalAmount = request.TotalAmount;
-			existingInvoice.UserId = request.UserId;
+        public void UpdateInvoice(Invoice existingInvoice, InvoiceRequestModel request)
+        {
+            GenericMappingHelper.Map(request, existingInvoice);
 
-			// Clear existing invoice lines
-			_dbContext.InvoiceLines.RemoveRange(existingInvoice.InvoiceLines);
+            _invoiceLineRepository.RemoveRange(existingInvoice.InvoiceLines);
 
-			if (request.invoiceLineRequestModels != null && request.invoiceLineRequestModels.Any())
-			{
-				foreach (var lineRequest in request.invoiceLineRequestModels)
-				{
-					var newLine = new InvoiceLine
-					{
-						Code = lineRequest.Code,
-						Description = lineRequest.Description,
-						Quantity = lineRequest.Quantity,
-						UnitPrice = lineRequest.UnitPrice,
-						VatRate = lineRequest.VatRate,
-						DiscountRate = lineRequest.DiscountRate,
-						TotalAmount = lineRequest.TotalAmount,
-						Status = lineRequest.Status,
-						UserId = existingInvoice.UserId,
-						ItemId = lineRequest.ItemId,
-						Deleted = lineRequest.Deleted
-					};
+            if (request.invoiceLineRequestModels != null && request.invoiceLineRequestModels.Any())
+            {
+                foreach (var lineRequest in request.invoiceLineRequestModels)
+                {
+                    var newLine = new InvoiceLine();
+                    GenericMappingHelper.Map(lineRequest, newLine);
+                    newLine.InvoiceId = existingInvoice.RecordId;
+                    newLine.UserId = existingInvoice.UserId;
 
-					existingInvoice.InvoiceLines.Add(newLine);
-				}
-			}
+                    _invoiceLineRepository.Add(newLine);
+                }
+            }
 
-			_dbContext.SaveChanges();
-		}
+            _invoiceRepository.Update(existingInvoice);
+        }
 
-		public Invoice GetInvoiceById(int id)
-		{
-			return _dbContext.Invoices
-				.Include(i => i.InvoiceLines)
-				.FirstOrDefault(i => i.RecordId == id);
-		}
+        public Invoice GetInvoiceById(int id)
+        {
+            return _invoiceRepository.Include(i => i.InvoiceLines)
+                .FirstOrDefault(i => i.RecordId == id);
+        }
 
-		public void DeleteInvoice(int invoiceId)
-		{
-			var invoiceToDelete = _dbContext.Invoices
-				.Include(i => i.InvoiceLines)
-				.FirstOrDefault(i => i.RecordId == invoiceId);
+        public void DeleteInvoice(int invoiceId)
+        {
+            var invoiceToDelete = _invoiceRepository.Include(i => i.InvoiceLines)
+        .FirstOrDefault(i => i.RecordId == invoiceId);
 
-			if (invoiceToDelete != null)
-			{
-				// Fatura satırlarını işaretleyerek "sil"
-				foreach (var invoiceLine in invoiceToDelete.InvoiceLines)
-				{
-					invoiceLine.Deleted = true;
-				}
+            if (invoiceToDelete != null)
+            {
+                foreach (var invoiceLine in invoiceToDelete.InvoiceLines)
+                {
+                    invoiceLine.Deleted = true;
+                    _invoiceLineRepository.Update(invoiceLine);
+                }
 
-				// Faturayı işaretleyerek "sil"
-				invoiceToDelete.Deleted = true;
+                invoiceToDelete.Deleted = true;
+                _invoiceRepository.Update(invoiceToDelete);
+            }
+            else
+            {
+                throw new InvalidOperationException("Belirtilen ID'ye sahip fatura bulunamadı.");
+            }
+        }
 
-				_dbContext.SaveChanges();
-			}
-			else
-			{
-				throw new InvalidOperationException("Belirtilen ID'ye sahip fatura bulunamadı.");
-			}
-		}
+        public IEnumerable<Invoice> Search()
+        {
+            return _invoiceRepository.List()
+                .Where(i => !i.Deleted.HasValue || (i.Deleted.HasValue && i.Deleted.Value == false));
+        }
 
-		public IEnumerable<Invoice> Search()
-		{
-			var query = _dbContext.Invoices.AsQueryable();
-			query = query.Where(i => !i.Deleted.HasValue || (i.Deleted.HasValue && i.Deleted.Value == false));
+        public IEnumerable<Invoice> SearchInvoices(string searchTerm)
+        {
+            var query = _invoiceRepository.List().AsQueryable();
 
-			return query.ToList();
-		}	
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(i =>
+                    i.Code.Contains(searchTerm) ||
+                    i.InvoiceNumber.Contains(searchTerm) ||
+                    i.Company.CompanyName.Contains(searchTerm) ||
+                    i.Customer.Name.Contains(searchTerm)
+                );
+            }
 
-		public IEnumerable<Invoice> SearchInvoices(string searchTerm)
-		{
-			var query = _dbContext.Invoices.AsQueryable();
+            return query.Where(i => !i.Deleted.HasValue || (i.Deleted.HasValue && i.Deleted.Value == false)).ToList();
+        }
 
-			if (!string.IsNullOrEmpty(searchTerm))
-			{
-				query = query.Where(i =>
-					i.Code.Contains(searchTerm) ||
-					i.InvoiceNumber.Contains(searchTerm) ||
-					// Diğer arama kriterlerini ekleyebilirsiniz...
-					i.Company.CompanyName.Contains(searchTerm) || // Örnek: Fatura ile ilişkilendirilmiş bir şirket adı araması
-					i.Customer.Name.Contains(searchTerm) // Örnek: Fatura ile ilişkilendirilmiş bir müşteri adı araması
-				);
-			}
-
-			query = query.Where(i => !i.Deleted.HasValue || (i.Deleted.HasValue && i.Deleted.Value == false));
-
-			return query.ToList();
-		}
-
-		public IEnumerable<InvoiceLine> GetInvoiceLinesByInvoiceId(int invoiceId)
-		{
-			var invoiceLines = _dbContext.InvoiceLines
-				.Where(il => il.InvoiceId == invoiceId)
-				.ToList();
-
-			return invoiceLines;
-		}
-
-	}
-
-
+        public IEnumerable<InvoiceLine> GetInvoiceLinesByInvoiceId(int invoiceId)
+        {
+            return _invoiceLineRepository.List()
+                .Where(il => il.InvoiceId == invoiceId)
+                .ToList();
+        }
+    }
 }

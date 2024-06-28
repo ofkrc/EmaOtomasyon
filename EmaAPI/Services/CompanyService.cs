@@ -1,124 +1,83 @@
-﻿using EmaAPI.Context;
+﻿using EmaAPI.Helpers;
 using EmaAPI.Models;
 using EmaAPI.Models.Request.Company;
+using EmaAPI.Repositories;
+using EmaAPI.Services.Interfaces;
 
 namespace EmaAPI.Services
 {
+    public class CompanyService : ICompanyService
+    {
+        private readonly IRepository<Company> _repository;
 
-    public interface ICompanyService
-	{
-		Company Insert(CompanyRequestModel request);
-		Company Update(int companyId, CompanyRequestModel request);
-		IEnumerable<Company> Search();
-		IEnumerable<Company> SearchCompanies(string searchTerm);
-		void DeleteCompanies(int companiesId);
-		Company GetCompanyById(int id);
+        public CompanyService(IRepository<Company> repository)
+        {
+            _repository = repository;
+        }
 
-    }
-	public class CompanyService : ICompanyService
-	{
-		private readonly EmaDbContext _dbContext;
-		public CompanyService(EmaDbContext dbContext)
-		{
-			_dbContext = dbContext;
-		}
+        public Company Insert(CompanyRequestModel request)
+        {
+            var newCompany = new Company();
+            GenericMappingHelper.Map(request, newCompany);
 
-		public Company Insert(CompanyRequestModel request)
-		{
-			var newCompany = new Company
-			{
-				CompanyName = request.CompanyName,
-				Address = request.Address,
-				Email = request.Email,
-				TaxNo = request.TaxNo,
-				TaxOffice = request.TaxOffice,
-				Website = request.Website,
-				PhoneNumber = request.PhoneNumber,
-				Status = request.Status,
-				Deleted = request.Deleted,
-				UserId = request.UserId			
-			};
-
-			_dbContext.Companies.Add(newCompany);
-			_dbContext.SaveChanges();
-
-			return newCompany;
-		}
+            return _repository.Add(newCompany);
+        }
 
         public Company GetCompanyById(int id)
         {
-            return _dbContext.Companies.FirstOrDefault(c => c.RecordId == id);
+            return _repository.Find(id);
         }
 
         public Company Update(int companyId, CompanyRequestModel request)
-		{
-			var existingCompany = _dbContext.Companies.Find(companyId);
+        {
+            var existingCompany = _repository.Find(companyId);
 
-			if (existingCompany == null)
-			{
+            if (existingCompany == null)
+            {
+                throw new InvalidOperationException("Belirtilen ID'ye sahip şirket bulunamadı.");
+            }
 
-				throw new InvalidOperationException("Belirtilen ID'ye sahip şirket bulunamadı.");
-			}
+            GenericMappingHelper.Map(request, existingCompany);
 
-			existingCompany.RecordId = request.RecordId;
-			existingCompany.CompanyName = request.CompanyName;
-			existingCompany.Address = request.Address;
-			existingCompany.Email = request.Email;
-			existingCompany.TaxNo = request.TaxNo; 
-			existingCompany.TaxOffice = request.TaxOffice; 
-			existingCompany.Website = request.Website;
-			existingCompany.PhoneNumber = request.PhoneNumber;
-			existingCompany.Status = request.Status;
-			existingCompany.UserId = request.UserId;
-			existingCompany.Deleted = false;
+            return _repository.Update(existingCompany);
+        }
 
-			_dbContext.SaveChanges();
+        public IEnumerable<Company> Search()
+        {
+            return _repository.List().Where(i => !i.Deleted.HasValue || (i.Deleted.HasValue && i.Deleted.Value == false));
+        }
 
-			return existingCompany;
-		}
+        public IEnumerable<Company> SearchCompanies(string searchTerm)
+        {
+            var query = _repository.List().AsQueryable();
 
-		public IEnumerable<Company> Search()
-		{
-			var query = _dbContext.Companies.AsQueryable();
-			query = query.Where(i => !i.Deleted.HasValue || (i.Deleted.HasValue && i.Deleted.Value == false));
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(i =>
+                    i.CompanyName.Contains(searchTerm) ||
+                    i.Address.Contains(searchTerm) ||
+                    i.PhoneNumber.Contains(searchTerm) ||
+                    i.TaxNo.Contains(searchTerm) ||
+                    i.TaxOffice.Contains(searchTerm) ||
+                    i.Email.Contains(searchTerm));
+            }
 
-			return query.ToList();
-		}
+            return query.Where(i => !i.Deleted.HasValue || (i.Deleted.HasValue && i.Deleted.Value == false)).ToList();
+        }
 
-		public IEnumerable<Company> SearchCompanies(string searchTerm)
-		{
-			var query = _dbContext.Companies.AsQueryable();
+        public void DeleteCompanies(int companiesId)
+        {
+            var companyToDelete = _repository.Find(companiesId);
 
-			if (!string.IsNullOrEmpty(searchTerm))
-			{
-				query = query.Where(i =>
-					i.CompanyName.Contains(searchTerm) ||
-					i.Address.Contains(searchTerm) ||
-					i.PhoneNumber.Contains(searchTerm) ||
-					i.TaxNo.Contains(searchTerm) ||
-					i.TaxOffice.Contains(searchTerm) ||
-					i.Email.Contains(searchTerm));
-
-			}
-
-			query = query.Where(i => !i.Deleted.HasValue || (i.Deleted.HasValue && i.Deleted.Value == false));
-
-			return query.ToList();
-		}
-
-		public void DeleteCompanies(int companiesId)
-		{
-			var companyToDelete = _dbContext.Companies.FirstOrDefault(i => i.RecordId == companiesId);
-
-			if (companyToDelete != null)
-			{
-				companyToDelete.Deleted = true;
-				_dbContext.SaveChanges();
-			}
-			else
-			{
-				throw new InvalidOperationException("Belirtilen ID'ye sahip şirket bulunamadı.");
-			}
-		}
-	}
+            if (companyToDelete != null)
+            {
+                companyToDelete.Deleted = true;
+                _repository.Update(companyToDelete);
+            }
+            else
+            {
+                throw new InvalidOperationException("Belirtilen ID'ye sahip şirket bulunamadı.");
+            }
+        }
+    }
 }
