@@ -1,14 +1,12 @@
-﻿using EmaAPI.Models.Request.Item;
-using EmaAPI.Models;
-using EmaAPI.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using EmaAPI.Models;
 using EmaAPI.Models.Request.Company;
-using Microsoft.AspNetCore.Authorization;
 using EmaAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EmaAPI.Controllers
 {
-	[Authorize]
+    [Authorize]
 	[ApiController]
 	[Route("api/[controller]")]
 	public class CompanyController : ControllerBase

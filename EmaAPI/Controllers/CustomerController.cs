@@ -1,6 +1,5 @@
 ﻿using EmaAPI.Models;
 using EmaAPI.Models.Request.Customer;
-using EmaAPI.Services;
 using EmaAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
