@@ -76,6 +76,7 @@ namespace EmaOtomasyon.Controllers
             var CompanyModel = new CompanyResponseModel
             {
                 CompanyName = model.CompanyName,
+                Code = model.Code,
                 Address = model.Address,
                 Website = model.Website,
                 Deleted = model.Deleted,
@@ -85,7 +86,9 @@ namespace EmaOtomasyon.Controllers
                 TaxOffice = model.TaxOffice,
                 UserId = model.UserId,
                 RecordId = model.RecordId,
-                TaxNo = model.TaxNo
+                TaxNo = model.TaxNo,
+                UpdatedDatetime = DateTime.Now,
+                CreatedDatetime = model.CreatedDatetime
             };
 
             var httpClient = HttpContext.Items["MyHttpClient"] as HttpClient;
@@ -131,6 +134,9 @@ namespace EmaOtomasyon.Controllers
                 TaxOffice = model.TaxOffice,
                 RecordId = model.RecordId,
                 TaxNo = model.TaxNo,
+                Code = model.Code,
+                UpdatedDatetime = model.UpdatedDatetime,
+                CreatedDatetime = DateTime.Now,
                 UserId = Convert.ToInt32(HttpContext.Items["RecordId"])
             };
 

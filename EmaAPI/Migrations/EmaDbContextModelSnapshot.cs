@@ -34,10 +34,17 @@ namespace EmaAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("Varchar");
 
+                    b.Property<string>("Code")
+                        .HasMaxLength(20)
+                        .HasColumnType("Varchar");
+
                     b.Property<string>("CompanyName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("Varchar");
+
+                    b.Property<DateTime?>("CreatedDatetime")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool?>("Deleted")
                         .HasColumnType("bit");
@@ -61,7 +68,10 @@ namespace EmaAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("Varchar");
 
-                    b.Property<int?>("UserId")
+                    b.Property<DateTime?>("UpdatedDatetime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Website")
@@ -87,8 +97,15 @@ namespace EmaAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("Varchar");
 
+                    b.Property<string>("Code")
+                        .HasMaxLength(20)
+                        .HasColumnType("Varchar");
+
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDatetime")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool?>("Deleted")
                         .HasColumnType("bit");
@@ -114,7 +131,10 @@ namespace EmaAPI.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("Varchar");
 
-                    b.Property<int?>("UserId")
+                    b.Property<DateTime?>("UpdatedDatetime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("RecordId");
@@ -135,12 +155,10 @@ namespace EmaAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("RecordId"));
 
                     b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(20)
+                        .HasColumnType("Varchar");
 
                     b.Property<DateTime?>("CreatedDatetime")
-                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<bool?>("Deleted")
@@ -166,6 +184,9 @@ namespace EmaAPI.Migrations
                         .IsRequired()
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("StockQuantity")
                         .IsRequired()
                         .HasColumnType("int");
@@ -173,7 +194,7 @@ namespace EmaAPI.Migrations
                     b.Property<DateTime?>("UpdatedDatetime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("VatRate")
@@ -243,10 +264,14 @@ namespace EmaAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("RecordId"));
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("Varchar");
 
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDatetime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
@@ -272,7 +297,10 @@ namespace EmaAPI.Migrations
                     b.Property<decimal?>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<DateTime?>("UpdatedDatetime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("RecordId");
@@ -295,9 +323,11 @@ namespace EmaAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("RecordId"));
 
                     b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(20)
+                        .HasColumnType("Varchar");
+
+                    b.Property<DateTime?>("CreatedDatetime")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool?>("Deleted")
                         .HasColumnType("bit");
@@ -327,7 +357,10 @@ namespace EmaAPI.Migrations
                     b.Property<decimal?>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<DateTime?>("UpdatedDatetime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("VatRate")
@@ -348,7 +381,9 @@ namespace EmaAPI.Migrations
                 {
                     b.HasOne("EmaAPI.Models.User", "User")
                         .WithMany("Company")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -361,7 +396,9 @@ namespace EmaAPI.Migrations
 
                     b.HasOne("EmaAPI.Models.User", "User")
                         .WithMany("Customer")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Company");
 
@@ -372,7 +409,9 @@ namespace EmaAPI.Migrations
                 {
                     b.HasOne("EmaAPI.Models.User", "User")
                         .WithMany("Item")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -389,7 +428,9 @@ namespace EmaAPI.Migrations
 
                     b.HasOne("EmaAPI.Models.User", "User")
                         .WithMany("Invoice")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Company");
 
@@ -410,7 +451,9 @@ namespace EmaAPI.Migrations
 
                     b.HasOne("EmaAPI.Models.User", "User")
                         .WithMany("InvoiceLine")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Invoice");
 

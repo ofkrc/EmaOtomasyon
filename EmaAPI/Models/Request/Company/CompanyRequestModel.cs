@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using EmaAPI.Core;
 
 namespace EmaAPI.Models.Request.Company
 {
-	public class CompanyRequestModel
+	public class CompanyRequestModel : EntityBase
 	{
 		public int RecordId { get; set; }
 		public string? CompanyName { get; set; }
@@ -13,8 +14,5 @@ namespace EmaAPI.Models.Request.Company
 		public string? Email { get; set; }
 		public string? TaxOffice { get; set; }
 		public string? TaxNo { get; set; }
-		public bool? Status { get; set; }
-		public bool? Deleted { get; set; }
-		public int UserId { get; set; }
 	}
 }

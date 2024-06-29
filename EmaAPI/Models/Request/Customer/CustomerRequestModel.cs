@@ -1,11 +1,12 @@
 ﻿
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using EmaAPI.Core;
 
 namespace EmaAPI.Models.Request.Customer
 {
-	public class CustomerRequestModel
-	{
+	public class CustomerRequestModel : EntityBase
+    {
 		public int RecordId { get; set; }
 		public string? Name { get; set; }
 		public string? Surname { get; set; }
@@ -13,8 +14,5 @@ namespace EmaAPI.Models.Request.Customer
 		public string? Email { get; set; }
 		public string? PhoneNumber { get; set; }
 		public int CompanyId { get; set; }
-		public int UserId { get; set; }
-		public bool Status { get; set; }
-		public bool? Deleted { get; set; }
 	}
 }

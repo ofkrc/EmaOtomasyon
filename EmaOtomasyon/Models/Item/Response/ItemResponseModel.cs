@@ -12,6 +12,7 @@
         public decimal? DiscountRate { get; set; }
         public decimal? VatRate { get; set; }
         public bool? Deleted { get; set; }
+        public bool? Status { get; set; }
         public int? UserId { get; set; }
         public DateTime? UpdatedDatetime { get; set; }
         public DateTime? CreatedDatetime { get; set; }

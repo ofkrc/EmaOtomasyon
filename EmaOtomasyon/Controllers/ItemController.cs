@@ -79,6 +79,7 @@ namespace EmaOtomasyon.Controllers
                 Code = model.Code,
                 Description = model.Description,
                 Deleted = model.Deleted,
+                Status = model.Status,
                 SalesPrice = model.SalesPrice,
                 StockQuantity = model.StockQuantity,
                 DiscountRate = model.DiscountRate,
@@ -86,6 +87,7 @@ namespace EmaOtomasyon.Controllers
                 UserId = model.UserId,
                 RecordId = model.RecordId,
                 VatRate = model.VatRate,
+                CreatedDatetime = model.CreatedDatetime,
                 UpdatedDatetime = DateTime.UtcNow
             };
 
@@ -125,13 +127,14 @@ namespace EmaOtomasyon.Controllers
                 Name = model.Name,
                 Code = model.Code,
                 Description = model.Description,
-                Deleted = model.Deleted,
+                Deleted = false,
                 SalesPrice = model.SalesPrice,
                 StockQuantity = model.StockQuantity,
                 DiscountRate = model.DiscountRate,
                 PurchasePrice = model.PurchasePrice,
                 VatRate = model.VatRate,
                 RecordId = model.RecordId,
+                Status = true,
                 CreatedDatetime = DateTime.UtcNow,
                 UserId = Convert.ToInt32(HttpContext.Items["RecordId"])
             };

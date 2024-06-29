@@ -19,8 +19,8 @@ namespace EmaAPI.Services
         {
             var newItem = new Item();
             GenericMappingHelper.Map(request, newItem);
-
             newItem = _itemRepository.Add(newItem);
+
             return newItem;
         }
 

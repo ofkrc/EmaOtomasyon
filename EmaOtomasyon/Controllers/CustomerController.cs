@@ -76,6 +76,7 @@ public class CustomerController : Controller
         {
             Name = model.Name,
             Address = model.Address,
+            Code = model.Code,
             CompanyId = model.CompanyId,
             Deleted = model.Deleted,
             Email = model.Email,
@@ -83,7 +84,9 @@ public class CustomerController : Controller
             Status = model.Status,
             Surname = model.Surname,
             UserId = model.UserId,
-            RecordId = model.RecordId
+            RecordId = model.RecordId,
+            UpdatedDatetime = DateTime.Now,
+            CreatedDatetime = model.CreatedDatetime
         };
 
         var httpClient = HttpContext.Items["MyHttpClient"] as HttpClient;
@@ -135,6 +138,7 @@ public class CustomerController : Controller
         var customerModel = new CustomerGetModel
         {
             Name = model.Name,
+            Code = model.Code,
             Address = model.Address,
             CompanyId = model.CompanyId,
             Deleted = false,
@@ -142,6 +146,8 @@ public class CustomerController : Controller
             PhoneNumber = model.PhoneNumber,
             Status = true,
             Surname = model.Surname,
+            CreatedDatetime = DateTime.Now,
+            UpdatedDatetime = null,
             UserId = Convert.ToInt32(HttpContext.Items["RecordId"])
         };
 

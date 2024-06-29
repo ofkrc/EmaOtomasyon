@@ -1,22 +1,19 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using EmaAPI.Core;
 
 namespace EmaAPI.Models
 {
 	
-	public class Item
-	{
+	public class Item : EntityBase
+    {
 		[Key]
 		public int? RecordId { get; set; }
 
 		[Required]
 		[StringLength(255)]
 		public string? Name { get; set; }
-
-		[Required]
-		[StringLength(30)]
-		public string? Code { get; set; }
 
 		[StringLength(1000)]
 		public string? Description { get; set; }
@@ -32,17 +29,8 @@ namespace EmaAPI.Models
 		[Required]
 		[Range(0, int.MaxValue)]
 		public int? StockQuantity { get; set; }
-
 		public decimal? DiscountRate { get; set; }
 		public decimal? VatRate { get; set; }
-
-		[Required]
-		public DateTime? CreatedDatetime { get; set; }
-
-		public DateTime? UpdatedDatetime { get; set; }
-		public bool? Deleted { get; set; } 
-
-		public int? UserId { get; set; }
 
 		[ForeignKey(nameof(UserId))]
 		public User? User { get; set; }

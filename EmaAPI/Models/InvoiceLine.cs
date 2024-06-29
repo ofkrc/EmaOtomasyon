@@ -1,15 +1,12 @@
-﻿using EmaAPI.Models;
+﻿using EmaAPI.Core;
+using EmaAPI.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class InvoiceLine
+public class InvoiceLine : EntityBase
 {
 	[Key]
 	public int? RecordId { get; set; }
-
-	[Required]
-	[StringLength(30)]
-	public string? Code { get; set; }
 
 	[StringLength(1000)]
 	public string? Description { get; set; }
@@ -18,11 +15,6 @@ public class InvoiceLine
 	public decimal? DiscountRate { get; set; }
 	public decimal? VatRate { get; set; }
 	public decimal? TotalAmount { get; set; }
-	public bool? Status { get; set; }
-	public bool? Deleted { get; set; }
-	
-
-	public int? UserId { get; set; }
 
 	[ForeignKey(nameof(UserId))]
 	public User? User { get; set; }

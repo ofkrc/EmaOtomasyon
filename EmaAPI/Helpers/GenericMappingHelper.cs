@@ -16,17 +16,45 @@ namespace EmaAPI.Helpers
 
             foreach (var sourceProperty in sourceProperties)
             {
+                if (sourceProperty.Name == "RecordId" || sourceProperty.Name == "Id")
+                {
+                    continue;
+                }
+
                 foreach (var targetProperty in targetProperties)
                 {
                     if (targetProperty.Name == sourceProperty.Name &&
-                        targetProperty.PropertyType == sourceProperty.PropertyType &&
+                        IsMatchingType(sourceProperty.PropertyType, targetProperty.PropertyType) &&
                         targetProperty.CanWrite)
                     {
-                        targetProperty.SetValue(target, sourceProperty.GetValue(source));
+                        var sourceValue = sourceProperty.GetValue(source);
+                        if (sourceValue != null || IsNullableType(targetProperty.PropertyType))
+                        {
+                            targetProperty.SetValue(target, sourceValue);
+                        }
                         break;
                     }
                 }
             }
+        }
+
+        private static bool IsMatchingType(Type sourceType, Type targetType)
+        {
+            if (sourceType == targetType)
+                return true;
+
+            if (IsNullableType(sourceType) && Nullable.GetUnderlyingType(sourceType) == targetType)
+                return true;
+
+            if (IsNullableType(targetType) && Nullable.GetUnderlyingType(targetType) == sourceType)
+                return true;
+
+            return false;
+        }
+
+        private static bool IsNullableType(Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
     }
 }

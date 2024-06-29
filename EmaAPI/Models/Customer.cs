@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using EmaAPI.Core;
 
 namespace EmaAPI.Models
 {
-	public class Customer
+	public class Customer : EntityBase
 	{
 		[Key]
 		public int? RecordId { get; set; }
@@ -29,16 +30,11 @@ namespace EmaAPI.Models
 		[Column(TypeName = "Varchar")]
 		[StringLength(15)]
 		public string? PhoneNumber { get; set; }
-		public bool? Status { get; set; }
-		public bool? Deleted { get; set; }
-
 
 		public int? CompanyId { get; set; }
 
 		[ForeignKey(nameof(CompanyId))]
 		public Company? Company { get; set; } 
-
-		public int? UserId { get; set; }
 
 		[ForeignKey(nameof(UserId))]
 		public User? User { get; set; }
